@@ -1,5 +1,6 @@
 import {FaOpencart} from "react-icons/fa6";
 import {CgLogIn} from "react-icons/cg";
+import {Link} from "react-router-dom";
 
 const openMenu = () => {
     const menu = document.getElementById('mobile-menu');
@@ -14,19 +15,19 @@ const Header = () => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
                 <div className="flex items-center justify-between">
                     <div className="flex-shrink-0">
-                        <a href="/" className="text-2xl font-bold">Vanilla Shop </a>
+                        <Link to="/" className="text-2xl font-bold">Vanilla Shop </Link>
                     </div>
                     <nav className="hidden md:flex space-x-10 text-lg">
-                        <a href="/cart"
-                           className="hover:text-gray-300 transition-all flex items-center gap-2"><FaOpencart/>Cart</a>
-                        <a href="/login"
-                           className="hover:text-gray-300 transition-all flex items-center gap-2"><CgLogIn/>Login</a>
+                        <Link to="/cart"
+                              className="hover:text-gray-300 transition-all flex items-center gap-2"><FaOpencart/>Cart</Link>
+                        <Link to="/login"
+                              className="hover:text-gray-300 transition-all flex items-center gap-2"><CgLogIn/>Login</Link>
                     </nav>
                     <div className="hidden md:block">
-                        <a href="/contact"
-                           className="bg-yellow-500 hover:bg-yellow-400 text-black py-2 px-6 rounded-full text-lg transition-all">
+                        <Link to="/contact"
+                              className="bg-yellow-500 hover:bg-yellow-400 text-black py-2 px-6 rounded-full text-lg transition-all">
                             Get in Touch
-                        </a>
+                        </Link>
                     </div>
                     <div className="md:hidden flex items-center">
                         <button
@@ -43,8 +44,8 @@ const Header = () => {
                     </div>
                 </div>
                 <div id="mobile-menu" className="md:hidden mt-5 hidden space-y-4">
-                    <a href="#" className="block text-lg hover:text-gray-300 transition-all">Cart</a>
-                    <a href="#services" className="block text-lg hover:text-gray-300 transition-all">Login</a>
+                    <Link to="/cart" className="block text-lg hover:text-gray-300 transition-all">Cart</Link>
+                    <Link to="/login" className="block text-lg hover:text-gray-300 transition-all">Login</Link>
                 </div>
             </div>
         </header>

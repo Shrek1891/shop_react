@@ -1,5 +1,6 @@
 import products from "../resources.ts";
 import Card from "../components/Card.tsx";
+import {Link} from "react-router-dom";
 
 const HomeScreen = () => {
     return (
@@ -9,7 +10,7 @@ const HomeScreen = () => {
                 {products.map((product) => {
                     return (
                         <div key={product._id}>
-                            <a href={`/product/${product._id}`}>
+                            <Link to={`/product/${product._id}`}>
                                 <Card
                                     description={product.description}
                                     name={product.name}
@@ -18,7 +19,7 @@ const HomeScreen = () => {
                                     category={product.category}
                                     rating={product.rating}
                                 />
-                            </a>
+                            </Link>
                         </div>
                     )
                 })}
