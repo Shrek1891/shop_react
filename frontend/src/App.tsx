@@ -4,6 +4,7 @@ import HomeScreen from "./screens/HomeScreen.tsx";
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import ProductScreen from "./screens/ProductScreen.tsx";
 
+
 function App() {
     return (
         <Router>
@@ -11,7 +12,7 @@ function App() {
             <main className="container mx-auto py-8">
                 <Routes>
                     <Route path="/" element={<HomeScreen/>}/>
-                    <Route path="/product/:id" element={<ProductScreen />}/>
+                    <Route path="/product/:id" element={<ProductScreen/>}/>
                 </Routes>
             </main>
             <Footer/>

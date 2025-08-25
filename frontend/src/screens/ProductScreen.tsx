@@ -1,12 +1,25 @@
-import products from "../resources.ts";
 import {Link, useParams} from "react-router-dom";
 import Rating from "../components/Rating.tsx";
+import type {Product} from "../resources.ts";
+import {useEffect, useState} from "react";
+import Loading from "../components/Loading.tsx";
 
 const ProductScreen = () => {
+    const [product, setProduct] = useState<Product | null>(null);
     let {id} = useParams();
-    const product = products.find((p) => p._id === id)
+    useEffect(() => {
+        const fetchProduct = async () => {
+            const response = await fetch(`http://127.0.0.1:8000/api/products/${id}`);
+            const data = await response.json();
+            setProduct(data);
+        }
+        fetchProduct();
+    }, []);
     if (!product) {
         return <div>Product not found</div>
+    }
+    if (!product) {
+        return <Loading/>
     }
     return (
         <div className="flex flex-col items-center justify-center">
