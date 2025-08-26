@@ -9,7 +9,7 @@ function App() {
     return (
         <Router>
             <Header/>
-            <main className="container mx-auto py-8">
+            <main className="container mx-auto py-8 min-h-screen">
                 <Routes>
                     <Route path="/" element={<HomeScreen/>}/>
                     <Route path="/product/:id" element={<ProductScreen/>}/>
