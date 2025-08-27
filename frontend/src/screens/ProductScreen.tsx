@@ -1,25 +1,16 @@
 import {Link, useParams} from "react-router-dom";
 import Rating from "../components/Rating.tsx";
-import type {Product} from "../resources.ts";
-import {useEffect, useState} from "react";
 import Loading from "../components/Loading.tsx";
+import {useGetProductQuery} from "../store/api.ts";
 
 const ProductScreen = () => {
-    const [product, setProduct] = useState<Product | null>(null);
     let {id} = useParams();
-    useEffect(() => {
-        const fetchProduct = async () => {
-            const response = await fetch(`http://127.0.0.1:8000/api/products/${id}`);
-            const data = await response.json();
-            setProduct(data);
-        }
-        fetchProduct();
-    }, []);
-    if (!product) {
-        return <div>Product not found</div>
-    }
-    if (!product) {
+    const {data: product, isLoading, error} = useGetProductQuery(id);
+    if (!product || isLoading) {
         return <Loading/>
+    }
+    if (error) {
+        return <div>Error</div>
     }
     return (
         <div className="flex flex-col items-center justify-center">
