@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 import Loading from "../components/Loading.tsx";
 import {useGetProductsQuery} from "../store/api.ts";
 import type {Product} from "../resources.ts";
+import Error from "../components/Error404.tsx";
 
 const HomeScreen = () => {
     const {data: products, isLoading, error} = useGetProductsQuery(
@@ -15,7 +16,7 @@ const HomeScreen = () => {
         return <Loading/>
     }
     if (error) {
-        return <div>Error</div>
+        return <Error/>
     }
     return (
         <div>

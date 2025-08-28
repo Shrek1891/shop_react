@@ -4,7 +4,8 @@ import HomeScreen from "./screens/HomeScreen.tsx";
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import ProductScreen from "./screens/ProductScreen.tsx";
 import {Provider} from "react-redux";
-import store from "./store/store.ts";
+import CartScreen from "./screens/CartScreen.tsx";
+import {store} from "./store/store.ts";
 
 
 function App() {
@@ -12,10 +13,11 @@ function App() {
         <Provider store={store}>
             <Router>
                 <Header/>
-                <main className="container mx-auto py-8 min-h-screen">
+                <main className="container mx-auto py-8 h-screen">
                     <Routes>
                         <Route path="/" element={<HomeScreen/>}/>
                         <Route path="/product/:id" element={<ProductScreen/>}/>
+                        <Route path="/cart" element={<CartScreen/>}/>
                     </Routes>
                 </main>
                 <Footer/>

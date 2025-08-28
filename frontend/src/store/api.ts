@@ -11,6 +11,7 @@ export const api = createApi({
         getProduct: builder.query({
             query: (id) => `products/${id}`,
         }),
+
     }),
 });
 

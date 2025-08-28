@@ -1,16 +1,37 @@
-import {Link, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import Rating from "../components/Rating.tsx";
 import Loading from "../components/Loading.tsx";
 import {useGetProductQuery} from "../store/api.ts";
+import Error from "../components/Error404.tsx";
+import {useState} from "react";
+import {useDispatch} from "react-redux";
+import {addCartSlice} from "../features/addCart.ts";
+import type {OrderItem} from "../types.ts";
+
 
 const ProductScreen = () => {
+    const navigate = useNavigate();
+    const [qty, setQty] = useState(1);
+    const dispatch = useDispatch()
     let {id} = useParams();
     const {data: product, isLoading, error} = useGetProductQuery(id);
+    const handleAddToCart = () => {
+        const cartItem: OrderItem = {
+            product: product._id,
+            name: product.name,
+            image: product.image,
+            price: product.price,
+            countInStock: product.countInStock,
+            qty,
+        }
+        dispatch(addCartSlice.actions.addToCart(cartItem))
+        navigate(`/cart`);
+    }
     if (!product || isLoading) {
         return <Loading/>
     }
     if (error) {
-        return <div>Error</div>
+        return <Error/>
     }
     return (
         <div className="flex flex-col items-center justify-center">
@@ -35,12 +56,22 @@ const ProductScreen = () => {
                             className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-sm dark:bg-blue-200 dark:text-blue-800 ms-3">
                             {product.countInStock > 0 ? "In Stock" : "Out of Stock"}
                         </span>
+
                     </div>
                     <div className="flex items-center justify-between">
                         <span
                             className="text-3xl font-bold ">{product?.price + " Candy"}</span>
                         <button className="button" disabled={product.countInStock === 0}>
-                            <span className="label">+ Add to card</span>
+                            {product.countInStock > 0 && (
+                                <span className="label">
+                                    <select className="text-white" onChange={(e) => setQty(Number(e.target.value))}>
+                                        {[...Array(product.countInStock).keys()].map((x) => (
+                                            <option className="text-black" key={x + 1} value={x + 1}>{x + 1}</option>
+                                        ))}
+                                    </select>
+                                </span>
+                            )}
+                            <span className="label" onClick={handleAddToCart}>+ Add </span>
                             <span className="gradient-container">
                             <span className="gradient"></span>
                           </span>
