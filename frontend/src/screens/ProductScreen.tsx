@@ -25,7 +25,7 @@ const ProductScreen = () => {
             qty,
         }
         dispatch(addCartSlice.actions.addToCart(cartItem))
-        navigate(`/cart`);
+        navigate(`/cart/${id}`);
     }
     if (!product || isLoading) {
         return <Loading/>
