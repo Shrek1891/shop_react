@@ -1,6 +1,10 @@
 import {FaOpencart} from "react-icons/fa6";
 import {CgLogIn} from "react-icons/cg";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import type {RootState} from "../store/store.ts";
+import {logout} from "../features/users.ts";
+import {clearCart} from "../features/addCart.ts";
 
 const openMenu = () => {
     const menu = document.getElementById('mobile-menu');
@@ -10,6 +14,23 @@ const openMenu = () => {
 }
 
 const Header = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch()
+    const userLogin = useSelector((state: RootState) => state.users.user)
+    const logoutHandler = () => {
+        dispatch(clearCart())
+        dispatch(logout())
+
+    }
+    const chooseHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        if (e.target.value)
+            if (e.target.value === 'Profile') {
+                navigate('/profile');
+            } else if (e.target.value === 'Logout') {
+                logoutHandler();
+                navigate('/login');
+            }
+    }
     return (
         <header className="bg-blue-900 text-white shadow sticky top-0 z-50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
@@ -20,8 +41,22 @@ const Header = () => {
                     <nav className="hidden md:flex space-x-10 text-lg">
                         <Link to="/cart"
                               className="hover:text-gray-300 transition-all flex items-center gap-2"><FaOpencart/>Cart</Link>
-                        <Link to="/login"
-                              className="hover:text-gray-300 transition-all flex items-center gap-2"><CgLogIn/>Login</Link>
+                        {userLogin !== null ?
+                            <select name="current-user" id="current-user" onChange={chooseHandler}
+                                    className="bg-blue-900 text-white" defaultValue={userLogin.name}>
+                                <option>{userLogin.name}</option>
+                                <option value="Profile">
+                                    Profile
+                                </option>
+                                <option value="Logout">
+                                    Logout
+                                </option>
+                            </select>
+
+                            : <Link to="/login"
+                                    className="hover:text-gray-300 transition-all flex items-center gap-2"><CgLogIn/>Login</Link>}
+
+
                     </nav>
                     <div className="hidden md:block">
                         <Link to="/contact"
@@ -45,7 +80,9 @@ const Header = () => {
                 </div>
                 <div id="mobile-menu" className="md:hidden mt-5 hidden space-y-4">
                     <Link to="/cart" className="block text-lg hover:text-gray-300 transition-all">Cart</Link>
-                    <Link to="/login" className="block text-lg hover:text-gray-300 transition-all">Login</Link>
+                    {userLogin !== null ?
+                        <Link to="/logout" className="block text-lg hover:text-gray-300 transition-all">Logout</Link>
+                        : <Link to="/login" className="block text-lg hover:text-gray-300 transition-all">Login</Link>}
                 </div>
             </div>
         </header>

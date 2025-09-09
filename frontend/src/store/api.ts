@@ -13,16 +13,22 @@ export const api = createApi({
             query: (id) => `products/${id}`,
         }),
         login: builder.mutation({
-            query: ({'username': email, password}) => ({
+            query: ({email, password}) => ({
                 url: 'users/login/',
                 method: 'POST',
                 body: {'username': email, password},
             }),
         }),
-
+        register: builder.mutation({
+            query: ({name, email, password}) => ({
+                url: 'users/register/',
+                method: 'POST',
+                body: {'name': name, 'email': email,'username': email, 'password': password},
+            }),
+        }),
     }),
 });
 
-export const {useGetProductsQuery, useGetProductQuery, useLoginMutation} = api;
+export const {useGetProductsQuery, useGetProductQuery, useLoginMutation, useRegisterMutation} = api;
 
 

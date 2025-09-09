@@ -1,9 +1,11 @@
 import {createSlice} from "@reduxjs/toolkit";
 
 const localStorageUser = localStorage.getItem("user")
+const localStorageCartItems = localStorage.getItem("cartItems")
 
 const initialState = {
-    user: localStorageUser ? JSON.parse(localStorageUser) : null
+    user: localStorageUser ? JSON.parse(localStorageUser) : null,
+    cartItem: localStorageCartItems ? JSON.parse(localStorageCartItems) : []
 }
 
 const usersSlice = createSlice({
@@ -18,6 +20,7 @@ const usersSlice = createSlice({
         logout: (state) => {
             state.user = null
             localStorage.removeItem("user")
+            localStorage.removeItem("cartItems")
         },
         register: (state, action) => {
             state.user = action.payload

@@ -35,7 +35,7 @@ const ProductScreen = () => {
     }
     return (
         <div className="flex flex-col items-center justify-center">
-            <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm ">
+            <div className="w-full h-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm ">
                 <div>
                     <span className="text-3xl font-bold text-gray-900 dark:text-white"></span>
                     <img className="p-8 rounded-t-lg" src={product?.image}
@@ -79,7 +79,7 @@ const ProductScreen = () => {
                     </div>
                 </div>
             </div>
-            <Link to="/" className="btn btn-light my-3 button">Back</Link>
+            <Link to="/" className="btn btn-light my-3 button absolute bottom-8 right-1">Back</Link>
         </div>
 
     )

@@ -7,6 +7,7 @@ import {Provider} from "react-redux";
 import CartScreen from "./screens/CartScreen.tsx";
 import {store} from "./store/store.ts";
 import LoginScreen from "./screens/LoginScreen.tsx";
+import RegisterScreen from "./screens/RegisterScreen.tsx";
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
                         <Route path="/product/:id" element={<ProductScreen/>}/>
                         <Route path="/cart/:id?" element={<CartScreen/>}/>
                         <Route path="/login" element={<LoginScreen/>}/>
+                        <Route path="/register" element={<RegisterScreen/>}/>
                     </Routes>
                 </main>
                 <Footer/>

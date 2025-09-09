@@ -1,25 +1,25 @@
 import {Link, useNavigate} from "react-router-dom";
 import {useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import type {RootState} from "../store/store.ts";
+import {useDispatch} from "react-redux";
 import {login} from "../features/users.ts";
 import {useLoginMutation} from "../store/api.ts";
 import Loading from "../components/Loading.tsx";
 
 const loginScreen = () => {
-    const [username, setUserName] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loginData, {isLoading, error}] = useLoginMutation();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const state = useSelector((state: RootState) => state.users);
+
 
     const loginHandle =
         async (e: React.FormEvent<HTMLFormElement>) => {
             e.preventDefault();
-            const response = await loginData({username, password})
+            const response = await loginData({email, password})
             if (response) {
                 dispatch(login(response.data))
+                navigate('/');
             }
         }
     if (isLoading) {
@@ -28,7 +28,7 @@ const loginScreen = () => {
     if (error) {
         return (
             <div className="h-screen bg-gradient-to-br  flex justify-center items-center w-full ">
-                <p className="text-red-500">{error.data.message}</p>
+                <p className="text-red-500">{"Invalid email or password"}</p>
             </div>
         )
     }
@@ -45,9 +45,9 @@ const loginScreen = () => {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
                                       d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"/>
                             </svg>
-                            <input className="pl-2 outline-none border-none w-full" type="text" name="username"
-                                   value={username}
-                                   placeholder="Username" required onChange={(e) => setUserName(e.target.value)}/>
+                            <input className="pl-2 outline-none border-none w-full" type="text" name="email"
+                                   value={email}
+                                   placeholder="Email" required onChange={(e) => setEmail(e.target.value)}/>
 
                         </div>
                         <div className="flex items-center border-2 py-2 px-3 rounded-md">
