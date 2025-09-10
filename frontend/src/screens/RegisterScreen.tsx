@@ -1,7 +1,7 @@
 import {Link, useNavigate} from "react-router-dom";
 import {useState} from "react";
 import {useDispatch} from "react-redux";
-import {login, register} from "../features/users.ts";
+import {login} from "../features/users.ts";
 import {useLoginMutation, useRegisterMutation} from "../store/api.ts";
 import Loading from "../components/Loading.tsx";
 
@@ -12,8 +12,8 @@ const RegisterScreen = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [isConfirmPassword, setIsConfirmPassword] = useState(false);
     const dispatch = useDispatch();
-    const [registerData, {isLoading, error, isSuccess}] = useRegisterMutation();
-    const [userLogin, {isLoading: isLoadingLogin, error: loginError, isSuccess: isLoginSuccess}] = useLoginMutation();
+    const [registerData, {isLoading, error}] = useRegisterMutation();
+    const [userLogin, {isLoading: isLoadingLogin,  isSuccess: isLoginSuccess}] = useLoginMutation();
     const navigate = useNavigate();
     const registerHandler = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();

@@ -40,7 +40,7 @@ const CartScreen = () => {
                     </div>
                     <div x-data="cart()" className="bg-blue-600 text-white px-3 py-1 rounded-full flex items-center">
                         <span
-                            x-text="cartItems.length"> {cartItem.reduce((acc: number, item: OrderItem) => acc + item.price * (item.qty || 0), 0)}</span>
+                            x-text="cartItems.length"> {cartItem.reduce((acc: number, item: OrderItem) => acc + Number(item.price) * (item.qty || 0), 0)}</span>
                         <span
                             className="hidden sm:inline ml-1">$ Amount</span>
                     </div>

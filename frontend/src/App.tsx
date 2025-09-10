@@ -8,6 +8,7 @@ import CartScreen from "./screens/CartScreen.tsx";
 import {store} from "./store/store.ts";
 import LoginScreen from "./screens/LoginScreen.tsx";
 import RegisterScreen from "./screens/RegisterScreen.tsx";
+import ProfileScreen from "./screens/ProfileScreen.tsx";
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
                         <Route path="/cart/:id?" element={<CartScreen/>}/>
                         <Route path="/login" element={<LoginScreen/>}/>
                         <Route path="/register" element={<RegisterScreen/>}/>
+                        <Route path="/profile/:id?" element={<ProfileScreen/>}/>
                     </Routes>
                 </main>
                 <Footer/>

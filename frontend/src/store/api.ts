@@ -12,6 +12,23 @@ export const api = createApi({
         getProduct: builder.query({
             query: (id) => `products/${id}`,
         }),
+        getUserProfile: builder.query({
+            query: ({token}) => ({
+                url: `users/profile/`,
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+            })
+        }),
+
+        updateUserProfile: builder.mutation({
+            query: () => ({
+                url: 'users/profile/',
+                method: 'PUT',
+            })
+        }),
         login: builder.mutation({
             query: ({email, password}) => ({
                 url: 'users/login/',
@@ -23,12 +40,19 @@ export const api = createApi({
             query: ({name, email, password}) => ({
                 url: 'users/register/',
                 method: 'POST',
-                body: {'name': name, 'email': email,'username': email, 'password': password},
+                body: {'name': name, 'email': email, 'username': email, 'password': password},
             }),
         }),
     }),
 });
 
-export const {useGetProductsQuery, useGetProductQuery, useLoginMutation, useRegisterMutation} = api;
+export const {
+    useGetProductsQuery,
+    useGetProductQuery,
+    useLoginMutation,
+    useRegisterMutation,
+    useGetUserProfileQuery,
+    useUpdateUserProfileMutation
+} = api;
 
 

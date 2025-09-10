@@ -1,10 +1,11 @@
 import {FaOpencart} from "react-icons/fa6";
 import {CgLogIn} from "react-icons/cg";
-import {Link, useNavigate} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import type {RootState} from "../store/store.ts";
 import {logout} from "../features/users.ts";
 import {clearCart} from "../features/addCart.ts";
+
 
 const openMenu = () => {
     const menu = document.getElementById('mobile-menu');
@@ -15,6 +16,7 @@ const openMenu = () => {
 
 const Header = () => {
     const navigate = useNavigate();
+    const locate = useLocation();
     const dispatch = useDispatch()
     const userLogin = useSelector((state: RootState) => state.users.user)
     const logoutHandler = () => {
@@ -25,6 +27,7 @@ const Header = () => {
     const chooseHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
         if (e.target.value)
             if (e.target.value === 'Profile') {
+
                 navigate('/profile');
             } else if (e.target.value === 'Logout') {
                 logoutHandler();
@@ -43,7 +46,8 @@ const Header = () => {
                               className="hover:text-gray-300 transition-all flex items-center gap-2"><FaOpencart/>Cart</Link>
                         {userLogin !== null ?
                             <select name="current-user" id="current-user" onChange={chooseHandler}
-                                    className="bg-blue-900 text-white" defaultValue={userLogin.name}>
+                                    className="bg-blue-900 text-white"
+                                    value={locate.pathname === '/profile' ? 'Profile' : userLogin.name}>
                                 <option>{userLogin.name}</option>
                                 <option value="Profile">
                                     Profile
