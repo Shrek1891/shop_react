@@ -15,7 +15,7 @@ const StarRating = ({startRating}: { startRating: number }) => {
                         />
                         <FaStar
                             size={30}
-                                color={currentRating <= startRating ? '#ffc107' : '#e4e5e9'}
+                            color={currentRating <= startRating ? '#ffc107' : '#e4e5e9'}
                             style={{cursor: 'pointer'}}
                         />
                     </label>

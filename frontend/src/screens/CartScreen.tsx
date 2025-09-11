@@ -11,6 +11,7 @@ const CartScreen = () => {
     const {cartItem} = useSelector((state: RootState) => state.addCart)
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const userLogin = useSelector((state: RootState) => state.users)
     const changeHandle = (item: OrderItem, qty: number) => {
         const updatedItem = {
             ...item,
@@ -29,6 +30,7 @@ const CartScreen = () => {
     const checkLogin = () => {
         navigate("/login?redirect=shipping");
     }
+
     return (
         <div className="bg-gray-100 font-sans min-h-screen">
             <div className="container mx-auto p-4 max-w-6xl">
@@ -74,36 +76,37 @@ const CartScreen = () => {
                                     <span>Price :</span>
                                     <span> {" " + item.price} $</span>
                                 </div>
-                                <div className="flex justify-center align-center items-center">
-                                    <span className="text-gray-600">Quantity : </span>
-                                    <div className="flex items-center border rounded mx-2">
-                                        <button
-                                            className="px-2 py-1 text-gray-500 cursor-pointer"
-                                            disabled={item.qty === item.countInStock}
-                                            onClick={() => handleClick(item, "+")}
-                                        >
-                                            <FaPlus/>
-                                        </button>
-                                        <input
-                                            onChange={(e) => {
-                                                const qty = parseInt(e.target.value);
-                                                changeHandle(item, qty)
-                                            }}
-                                            type="number"
-                                            min="1"
-                                            max={item.countInStock}
-                                            value={item.qty || 1}
-                                            className="w-12 text-center border-x text-gray-500 cursor-pointer"
-                                        />
-                                        <button
-                                            disabled={item.qty === 1}
-                                            onClick={() => handleClick(item, "-")}
-                                            className="px-2 py-1 text-gray-500 cursor-pointer">
-                                            <FaMinus/>
-                                        </button>
+                                {userLogin.user &&
+                                    <div className="flex justify-center align-center items-center">
+                                        <span className="text-gray-600">Quantity : </span>
+                                        <div className="flex items-center border rounded mx-2">
+                                            <button
+                                                className="px-2 py-1 text-gray-500 cursor-pointer"
+                                                disabled={item.qty === item.countInStock}
+                                                onClick={() => handleClick(item, "+")}
+                                            >
+                                                <FaPlus/>
+                                            </button>
+                                            <input
+                                                onChange={(e) => {
+                                                    const qty = parseInt(e.target.value);
+                                                    changeHandle(item, qty)
+                                                }}
+                                                type="number"
+                                                min="1"
+                                                max={item.countInStock}
+                                                value={item.qty || 1}
+                                                className="w-12 text-center border-x text-gray-500 cursor-pointer"
+                                            />
+                                            <button
+                                                disabled={item.qty === 1}
+                                                onClick={() => handleClick(item, "-")}
+                                                className="px-2 py-1 text-gray-500 cursor-pointer">
+                                                <FaMinus/>
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-
+                                }
                                 <button
                                     className="text-red-500 hover:text-red-700 cursor-pointer"
                                     onClick={() => dispatch(removeCart(item))}

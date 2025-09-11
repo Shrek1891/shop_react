@@ -1,5 +1,6 @@
 import Rating from "./Rating.tsx";
 
+
 type CardProps = {
     description: string
     name: string
@@ -10,9 +11,11 @@ type CardProps = {
 }
 
 const Card = ({description, name, price, image, category, rating}: CardProps) => {
+
     return (
         <div
-            className="testimonial-card relative rounded-2xl shadow-xl overflow-hidden group hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 glow-effect h-full">
+            className="testimonial-card relative rounded-2xl shadow-xl overflow-hidden group
+            hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 glow-effect h-full">
             <div className="absolute top-4 left-4 quote-mark">"</div>
             <div className="p-8 pt-16">
                 <div className="flex mb-6 star-rating items-center gap-2">
@@ -34,7 +37,8 @@ const Card = ({description, name, price, image, category, rating}: CardProps) =>
                     </div>
                 </div>
                 <div
-                    className="absolute top-4 right-4 bg-gradient-to-r from-purple-500 to-teal-500 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                    className="absolute top-4 right-4 bg-gradient-to-r from-purple-500 to-teal-500 text-white
+                    px-3 py-1 rounded-full text-xs font-semibold">
                     {category}
                 </div>
             </div>

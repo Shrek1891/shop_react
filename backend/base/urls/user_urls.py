@@ -3,7 +3,6 @@ from base.views.user_views import MyTokenObtainPairView
 from base.views.user_views import get_user_profile, get_users, register_user, update_user_profile
 
 urlpatterns = [
-
     path('login/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('profile/', get_user_profile, name='user_profile'),
     path('', get_users, name='users'),

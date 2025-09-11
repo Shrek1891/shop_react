@@ -4,12 +4,13 @@ import Loading from "../components/Loading.tsx";
 import {useGetProductQuery} from "../store/api.ts";
 import Error from "../components/Error404.tsx";
 import {useState} from "react";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {addCartSlice} from "../features/addCart.ts";
 import type {OrderItem} from "../types.ts";
-
+import type {RootState} from "../store/store.ts";
 
 const ProductScreen = () => {
+    const userLogin = useSelector((state: RootState) => state.users)
     const navigate = useNavigate();
     const [qty, setQty] = useState(1);
     const dispatch = useDispatch()
@@ -61,21 +62,22 @@ const ProductScreen = () => {
                     <div className="flex items-center justify-between">
                         <span
                             className="text-3xl font-bold ">{product?.price + " Candy"}</span>
-                        <button className="button" disabled={product.countInStock === 0}>
-                            {product.countInStock > 0 && (
-                                <span className="label">
+                        {userLogin.user &&
+                            <button className="button" disabled={product.countInStock === 0}>
+                                {product.countInStock > 0 && (
+                                    <span className="label">
                                     <select className="text-white" onChange={(e) => setQty(Number(e.target.value))}>
                                         {[...Array(product.countInStock).keys()].map((x) => (
                                             <option className="text-black" key={x + 1} value={x + 1}>{x + 1}</option>
                                         ))}
                                     </select>
                                 </span>
-                            )}
-                            <span className="label" onClick={handleAddToCart}>+ Add </span>
-                            <span className="gradient-container">
+                                )}
+                                <span className="label" onClick={handleAddToCart}>+ Add </span>
+                                <span className="gradient-container">
                             <span className="gradient"></span>
                           </span>
-                        </button>
+                            </button>}
                     </div>
                 </div>
             </div>
