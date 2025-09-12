@@ -2,7 +2,6 @@ import {createSlice} from "@reduxjs/toolkit";
 
 const localStorageUser = localStorage.getItem("user")
 const localStorageCartItems = localStorage.getItem("cartItems")
-
 const initialState = {
     user: localStorageUser ? JSON.parse(localStorageUser) : null,
     cartItem: localStorageCartItems ? JSON.parse(localStorageCartItems) : []
@@ -28,8 +27,12 @@ const usersSlice = createSlice({
         clearUser: (state) => {
             state.user = null
         },
+        updateUserProfile: (state, action) => {
+            state.user = action.payload
+            localStorage.setItem("user", JSON.stringify(action.payload))
+        },
     }
 })
 
-export const {login, logout, register, clearUser} = usersSlice.actions
+export const {login, logout, register, clearUser, updateUserProfile} = usersSlice.actions
 export default usersSlice.reducer

@@ -13,7 +13,7 @@ const RegisterScreen = () => {
     const [isConfirmPassword, setIsConfirmPassword] = useState(false);
     const dispatch = useDispatch();
     const [registerData, {isLoading, error}] = useRegisterMutation();
-    const [userLogin, {isLoading: isLoadingLogin,  isSuccess: isLoginSuccess}] = useLoginMutation();
+    const [userLogin, {isLoading: isLoadingLogin, isSuccess: isLoginSuccess}] = useLoginMutation();
     const navigate = useNavigate();
     const registerHandler = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -34,11 +34,11 @@ const RegisterScreen = () => {
     return isLoading || isLoadingLogin ? (
         <Loading/>
     ) : (
-        <div className="h-screen bg-gradient-to-br  flex justify-center items-center w-full ">
+        <div className=" mt-5 bg-gradient-to-br  flex justify-center items-center w-full ">
             <form onSubmit={(e) => registerHandler(e)}>
                 <div className="bg-white px-10 py-8 rounded-xl w-screen shadow-xl max-w-sm">
                     <div className="space-y-4">
-                        <h1 className="text-center text-2xl font-semibold text-gray-600">Login</h1>
+                        <h1 className="text-center text-2xl font-semibold text-gray-600">Register</h1>
                         <hr/>
                         {isConfirmPassword && <p className="text-red-500">{"Passwords do not match"}</p>}
                         <div className="flex items-center border-2 py-2 px-3 rounded-md mb-4">

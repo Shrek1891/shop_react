@@ -17,7 +17,7 @@ const loginScreen = () => {
         async (e: React.FormEvent<HTMLFormElement>) => {
             e.preventDefault();
             const response = await loginData({email, password})
-            if (response) {
+            if (response && !response.error ) {
                 dispatch(login(response.data))
                 navigate('/');
             }
@@ -27,8 +27,9 @@ const loginScreen = () => {
     }
     if (error) {
         return (
-            <div className="h-screen bg-gradient-to-br  flex justify-center items-center w-full ">
-                <p className="text-red-500">{"Invalid email or password"}</p>
+            <div className="h-screen bg-gradient-to-br  flex justify-center items-center space-x-4 w-full  ">
+                <p className="text-red-500">{"Invalid email or password"}</p> <br/>
+                <Link to="/register" className="text-red-500">{"->   Register"}</Link>
             </div>
         )
     }
