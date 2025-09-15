@@ -5,6 +5,10 @@ import {MdDeleteSweep} from "react-icons/md";
 import {FaMinus, FaPlus} from "react-icons/fa";
 import type {OrderItem} from "../types.ts";
 import {addToCart, removeCart} from "../features/addCart.ts";
+import InfoTablet from "../components/ui/InfoTablet.tsx";
+import ButtonQuantity from "../components/ui/buttonQuantity.tsx";
+import InfoCart from "../components/ui/InfoCart.tsx";
+import CheckoutSteps from "../components/CheckoutStpes.tsx";
 
 
 const CartScreen = () => {
@@ -30,36 +34,19 @@ const CartScreen = () => {
     const checkLogin = () => {
         navigate("/login?redirect=shipping");
     }
-
     return (
         <div className="bg-gray-100 font-sans min-h-screen">
+            <CheckoutSteps step="cart" />
             <div className="container mx-auto p-4 max-w-6xl">
                 <div className="flex justify-between items-center mb-8">
                     <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800">Shopping Cart</h1>
-                    <div x-data="cart()" className="bg-blue-600 text-white px-3 py-1 rounded-full flex items-center">
-                        <span x-text="cartItems.length"> {cartItem.length}</span> <span
-                        className="hidden sm:inline ml-1">items</span>
-                    </div>
-                    <div x-data="cart()" className="bg-blue-600 text-white px-3 py-1 rounded-full flex items-center">
-                        <span
-                            x-text="cartItems.length"> {cartItem.reduce((acc: number, item: OrderItem) => acc + Number(item.price) * (item.qty || 0), 0)}</span>
-                        <span
-                            className="hidden sm:inline ml-1">$ Amount</span>
-                    </div>
+                    <InfoTablet info={cartItem.length} text="items"/>
+                    <InfoTablet
+                        info={cartItem.reduce((acc: number, item: OrderItem) => acc + Number(item.price) * (item.qty || 0), 0)}
+                        text="$ Amount"/>
                 </div>
             </div>
-            {!cartItem.length && (
-                <div className="container mx-auto p-4 max-w-6xl">
-                    <div x-show="cartItems.length === 0" className="bg-white rounded-lg shadow-md p-6 text-center">
-                        <i className="fas fa-shopping-cart text-gray-300 text-5xl mb-4"></i>
-                        <p className="text-xl text-gray-500">Your cart is empty</p>
-                        <Link to="/"
-                              className="inline-block mt-4 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
-                            Continue Shopping
-                        </Link>
-                    </div>
-                </div>)
-            }
+            {!cartItem.length && <InfoCart link={"/"}/>}
             <div>
                 {
                     cartItem.map((item: OrderItem) => (
@@ -80,13 +67,11 @@ const CartScreen = () => {
                                     <div className="flex justify-center align-center items-center">
                                         <span className="text-gray-600">Quantity : </span>
                                         <div className="flex items-center border rounded mx-2">
-                                            <button
-                                                className="px-2 py-1 text-gray-500 cursor-pointer"
+                                            <ButtonQuantity
+                                                children={<FaPlus/>}
+                                                func={() => handleClick(item, "+")}
                                                 disabled={item.qty === item.countInStock}
-                                                onClick={() => handleClick(item, "+")}
-                                            >
-                                                <FaPlus/>
-                                            </button>
+                                            />
                                             <input
                                                 onChange={(e) => {
                                                     const qty = parseInt(e.target.value);
@@ -98,21 +83,19 @@ const CartScreen = () => {
                                                 value={item.qty || 1}
                                                 className="w-12 text-center border-x text-gray-500 cursor-pointer"
                                             />
-                                            <button
+                                            <ButtonQuantity
+                                                children={<FaMinus/>}
+                                                func={() => handleClick(item, "-")}
                                                 disabled={item.qty === 1}
-                                                onClick={() => handleClick(item, "-")}
-                                                className="px-2 py-1 text-gray-500 cursor-pointer">
-                                                <FaMinus/>
-                                            </button>
+                                            />
                                         </div>
                                     </div>
                                 }
-                                <button
-                                    className="text-red-500 hover:text-red-700 cursor-pointer"
-                                    onClick={() => dispatch(removeCart(item))}
-                                >
-                                    <MdDeleteSweep/>
-                                </button>
+                                < ButtonQuantity
+                                    children={<MdDeleteSweep/>}
+                                    func={() => dispatch(removeCart(item))}
+                                    disabled={item.qty === 1}
+                                />
                             </div>
                         </div>
                     ))
@@ -121,12 +104,11 @@ const CartScreen = () => {
             </div>
             {cartItem.length && (
                 <div className="flex justify-center mt-4">
-                    <button
-                        className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition cursor-pointer"
-                        onClick={checkLogin}
+                    <Link to="/shipping"
+                          className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition cursor-pointer"
                     >
                         Buy Now
-                    </button>
+                    </Link>
                 </div>
             )}
 

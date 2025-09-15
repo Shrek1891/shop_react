@@ -2,8 +2,13 @@ import {createSlice} from "@reduxjs/toolkit";
 import type {OrderItem} from "../types.ts";
 
 const localStorageCartItems = localStorage.getItem("cartItems");
+const localStorageShippingAddress = localStorage.getItem("shippingAddress");
+const localStoragePaymentMethod = localStorage.getItem("paymentMethod");
+
 const initialState = {
-    cartItem: localStorageCartItems ? JSON.parse(localStorageCartItems) : []
+    cartItem: localStorageCartItems ? JSON.parse(localStorageCartItems) : [],
+    shippingAddress: localStorageShippingAddress ? JSON.parse(localStorageShippingAddress) : {},
+    paymentMethod: localStoragePaymentMethod ? JSON.parse(localStoragePaymentMethod) : "",
 }
 
 export const addCartSlice = createSlice({
@@ -32,10 +37,18 @@ export const addCartSlice = createSlice({
             state.cartItem = [];
             localStorage.setItem("cartItems", JSON.stringify(state.cartItem));
         },
+        saveShippingAddress: (state, action) => {
+            state.shippingAddress = action.payload;
+            localStorage.setItem("shippingAddress", JSON.stringify(action.payload));
+        },
+        savePaymentMethod: (state, action) => {
+            state.paymentMethod = action.payload;
+            localStorage.setItem("paymentMethod", JSON.stringify(action.payload));
+        },
     },
 })
 
-export const {addToCart, removeCart, clearCart} = addCartSlice.actions;
+export const {addToCart, removeCart, clearCart, saveShippingAddress, savePaymentMethod} = addCartSlice.actions;
 export default addCartSlice.reducer;
 
 

@@ -9,6 +9,8 @@ import {store} from "./store/store.ts";
 import LoginScreen from "./screens/LoginScreen.tsx";
 import RegisterScreen from "./screens/RegisterScreen.tsx";
 import ProfileScreen from "./screens/ProfileScreen.tsx";
+import ShippingScreen from "./screens/SchippingScreen.tsx";
+import PaymentScreen from "./screens/PaymentScreen.tsx";
 
 
 function App() {
@@ -24,6 +26,8 @@ function App() {
                         <Route path="/login" element={<LoginScreen/>}/>
                         <Route path="/register" element={<RegisterScreen/>}/>
                         <Route path="/profile/:id?" element={<ProfileScreen/>}/>
+                        <Route path="/shipping" element={<ShippingScreen/>}/>
+                        <Route path="/payment" element={<PaymentScreen/>}/>
                     </Routes>
                 </main>
                 <Footer/>

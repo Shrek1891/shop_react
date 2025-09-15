@@ -31,7 +31,7 @@ const ProductScreen = () => {
     if (!product || isLoading) {
         return <Loading/>
     }
-    if (error) {
+    if (error || !product) {
         return <Error/>
     }
     return (
