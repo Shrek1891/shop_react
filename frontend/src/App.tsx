@@ -11,6 +11,7 @@ import RegisterScreen from "./screens/RegisterScreen.tsx";
 import ProfileScreen from "./screens/ProfileScreen.tsx";
 import ShippingScreen from "./screens/SchippingScreen.tsx";
 import PaymentScreen from "./screens/PaymentScreen.tsx";
+import PlaceOrderScreen from "./screens/PlaceOrderScreen.tsx";
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
                         <Route path="/profile/:id?" element={<ProfileScreen/>}/>
                         <Route path="/shipping" element={<ShippingScreen/>}/>
                         <Route path="/payment" element={<PaymentScreen/>}/>
+                        <Route path="/confirm" element={<PlaceOrderScreen/>}/>
                     </Routes>
                 </main>
                 <Footer/>

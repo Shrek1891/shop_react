@@ -37,6 +37,7 @@ const CartScreen = () => {
     return (
         <div className="bg-gray-100 font-sans min-h-screen">
             <CheckoutSteps step="cart" />
+
             <div className="container mx-auto p-4 max-w-6xl">
                 <div className="flex justify-between items-center mb-8">
                     <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800">Shopping Cart</h1>
