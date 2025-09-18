@@ -1,7 +1,10 @@
 import CheckoutSteps from "../components/CheckoutStpes.tsx";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import type {RootState} from "../store/store.ts";
 import type {OrderItem} from "../types.ts";
+import {useAddOrderItemsMutation} from "../store/api.ts";
+import {useNavigate} from "react-router-dom";
+import {clearCart, clearPaymentMethod, clearShippingAddress} from "../features/addCart.ts";
 
 const PlaceOrderScreen = () => {
     const shippingAddress = useSelector((state: RootState) => state.addCart.shippingAddress)
@@ -11,6 +14,29 @@ const PlaceOrderScreen = () => {
     const shippingPrice = (itemsPrice > 100 ? 0 : 10).toFixed(2)
     const taxPrice = (0.15 * itemsPrice).toFixed(2)
     const totalPrice = Number(itemsPrice) + Number(shippingPrice) + Number(taxPrice)
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const [addOrderItems] = useAddOrderItemsMutation()
+    const placeOrder = async () => {
+        const user = JSON.parse(localStorage.getItem('user') || '{}')
+        const {data, error} = await addOrderItems({
+            orderItems: cartItems,
+            shippingAddress,
+            paymentMethod,
+            itemsPrice,
+            shippingPrice,
+            taxPrice,
+            totalPrice,
+            token: user.token,
+        })
+        console.log(data)
+        dispatch(clearCart())
+        dispatch(clearPaymentMethod())
+        dispatch(clearShippingAddress())
+        if (!error && data) {
+            navigate(`/order/${data._id}`)
+        }
+    }
     return (
         <div>
             <CheckoutSteps step="confirm"/>
@@ -64,6 +90,7 @@ const PlaceOrderScreen = () => {
                         </div>
                     </div>
                     <button
+                        onClick={placeOrder}
                         className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-all duration-300 ease-in-out cursor-pointer">Place
                         Order
                     </button>

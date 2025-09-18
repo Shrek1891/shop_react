@@ -48,6 +48,26 @@ export const api = createApi({
                 body: {'name': name, 'email': email, 'username': email, 'password': password},
             }),
         }),
+        addOrderItems: builder.mutation({
+            query: ({orderItems, shippingAddress, paymentMethod, itemsPrice, shippingPrice, taxPrice, totalPrice, token}) => ({
+                url: 'orders/add/',
+                method: 'POST',
+                body: {
+                    orderItems,
+                    shippingAddress,
+                    paymentMethod,
+                    itemsPrice,
+                    shippingPrice,
+                    taxPrice,
+                    totalPrice
+                },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+
+            }),
+        }),
     }),
 });
 
@@ -57,7 +77,8 @@ export const {
     useLoginMutation,
     useRegisterMutation,
     useGetUserProfileQuery,
-    useUpdateUserProfileMutation
+    useUpdateUserProfileMutation,
+    useAddOrderItemsMutation
 } = api;
 
 

@@ -4,11 +4,13 @@ import type {OrderItem} from "../types.ts";
 const localStorageCartItems = localStorage.getItem("cartItems");
 const localStorageShippingAddress = localStorage.getItem("shippingAddress");
 const localStoragePaymentMethod = localStorage.getItem("paymentMethod");
+const localStorageOrderItems = localStorage.getItem("orderItems");
 
 const initialState = {
     cartItem: localStorageCartItems ? JSON.parse(localStorageCartItems) : [],
     shippingAddress: localStorageShippingAddress ? JSON.parse(localStorageShippingAddress) : {},
     paymentMethod: localStoragePaymentMethod ? JSON.parse(localStoragePaymentMethod) : "",
+    orderItems: localStorageOrderItems ? JSON.parse(localStorageOrderItems) : [],
 }
 
 export const addCartSlice = createSlice({
@@ -45,10 +47,26 @@ export const addCartSlice = createSlice({
             state.paymentMethod = action.payload;
             localStorage.setItem("paymentMethod", JSON.stringify(action.payload));
         },
+        saveOrderItems: (state, action) => {
+            state.orderItems = action.payload;
+            localStorage.setItem("orderItems", JSON.stringify(action.payload));
+        },
+        clearPaymentMethod: (state) => {
+            state.paymentMethod = "";
+            localStorage.setItem("paymentMethod", JSON.stringify(state.paymentMethod));
+        },
+        clearShippingAddress: (state) => {
+            state.shippingAddress = {};
+            localStorage.setItem("shippingAddress", JSON.stringify(state.shippingAddress));
+        },
+        clearOrderItems: (state) => {
+            state.orderItems = [];
+            localStorage.setItem("orderItems", JSON.stringify(state.orderItems));
+        },
     },
 })
 
-export const {addToCart, removeCart, clearCart, saveShippingAddress, savePaymentMethod} = addCartSlice.actions;
+export const {addToCart, removeCart, clearCart, saveShippingAddress, savePaymentMethod, clearPaymentMethod, clearShippingAddress, clearOrderItems} = addCartSlice.actions;
 export default addCartSlice.reducer;
 
 

@@ -2,7 +2,8 @@ from django.contrib.auth.models import User
 from rest_framework import serializers, viewsets
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .models import Product
+from .models import Product, ShippingAddress, OrderItem, Order
+
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
@@ -14,13 +15,17 @@ class UserSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField(read_only=True)
     _id = serializers.SerializerMethodField(read_only=True)
     is_admin = serializers.SerializerMethodField(read_only=True)
+
     class Meta:
         model = User
-        fields = ['id','_id', 'name', 'username', 'email','is_admin']
+        fields = ['id', '_id', 'name', 'username', 'email', 'is_admin']
+
     def get_is_admin(self, obj):
         return obj.is_staff
+
     def get__id(self, obj):
         return obj.id
+
     def get_name(self, obj):
         name = obj.first_name
         if name == '':
@@ -30,9 +35,44 @@ class UserSerializer(serializers.ModelSerializer):
 
 class UserSerializerWithToken(UserSerializer):
     token = serializers.SerializerMethodField(read_only=True)
+
     class Meta:
         model = User
-        fields = ['id','_id', 'name', 'username', 'email','is_admin', 'token']
+        fields = ['id', '_id', 'name', 'username', 'email', 'is_admin', 'token']
+
     def get_token(self, obj):
         token = RefreshToken.for_user(obj)
         return str(token.access_token)
+
+
+class ShippingAddressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ShippingAddress
+        fields = '__all__'
+
+
+class OrderItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderItem
+        fields = '__all__'
+
+
+class OrderSerializer(serializers.ModelSerializer):
+    order_items = serializers.SerializerMethodField(read_only=True)
+    shippingAddress = serializers.SerializerMethodField(read_only=True)
+    class Meta:
+        model = Order
+        fields = '__all__'
+
+    def get_order_items(self, obj):
+        items = obj.orderitem_set.all()
+        serializer = OrderItemSerializer(items, many=True)
+        return serializer.data
+
+    def get_shippingAddress(self, obj):
+        try:
+            address = ShippingAddressSerializer(obj.shippingAddress, many=False)
+        except:
+            address = False
+        return address
+

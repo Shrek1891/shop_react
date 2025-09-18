@@ -12,7 +12,8 @@ const usersSlice = createSlice({
     initialState,
     reducers: {
         login: (state, action) => {
-            localStorage.setItem("user", JSON.stringify(action.payload))
+            const {password, ...rest} = action.payload
+            localStorage.setItem("user", JSON.stringify({...rest}))
             state.user = action.payload
 
         },
@@ -20,6 +21,9 @@ const usersSlice = createSlice({
             state.user = null
             localStorage.removeItem("user")
             localStorage.removeItem("cartItems")
+            localStorage.removeItem("shippingAddress")
+            localStorage.removeItem("paymentMethod")
+            localStorage.removeItem("orderItems")
         },
         register: (state, action) => {
             state.user = action.payload
