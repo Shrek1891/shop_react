@@ -5,12 +5,24 @@ const localStorageCartItems = localStorage.getItem("cartItems");
 const localStorageShippingAddress = localStorage.getItem("shippingAddress");
 const localStoragePaymentMethod = localStorage.getItem("paymentMethod");
 const localStorageOrderItems = localStorage.getItem("orderItems");
+const localStorageOrderDetails = localStorage.getItem("orderDetails");
+import type {shippingAddress} from "../types.ts";
 
-const initialState = {
+interface initialState {
+    cartItem: OrderItem[];
+    shippingAddress: shippingAddress | null;
+    paymentMethod: string;
+    orderItems: OrderItem[];
+    orderDetails: OrderItem[];
+}
+
+
+const initialState: initialState = {
     cartItem: localStorageCartItems ? JSON.parse(localStorageCartItems) : [],
     shippingAddress: localStorageShippingAddress ? JSON.parse(localStorageShippingAddress) : {},
     paymentMethod: localStoragePaymentMethod ? JSON.parse(localStoragePaymentMethod) : "",
     orderItems: localStorageOrderItems ? JSON.parse(localStorageOrderItems) : [],
+    orderDetails: localStorageOrderDetails ? JSON.parse(localStorageOrderDetails) : [],
 }
 
 export const addCartSlice = createSlice({
@@ -56,17 +68,36 @@ export const addCartSlice = createSlice({
             localStorage.setItem("paymentMethod", JSON.stringify(state.paymentMethod));
         },
         clearShippingAddress: (state) => {
-            state.shippingAddress = {};
+            state.shippingAddress = null;
             localStorage.setItem("shippingAddress", JSON.stringify(state.shippingAddress));
         },
         clearOrderItems: (state) => {
             state.orderItems = [];
             localStorage.setItem("orderItems", JSON.stringify(state.orderItems));
         },
+        saveOrderDetails: (state, action) => {
+            state.orderDetails = action.payload;
+            localStorage.setItem("orderDetails", JSON.stringify(action.payload));
+        },
+        clearOrderDetails: (state) => {
+            state.orderDetails = [];
+            localStorage.setItem("orderDetails", JSON.stringify(state.orderDetails));
+        },
     },
 })
 
-export const {addToCart, removeCart, clearCart, saveShippingAddress, savePaymentMethod, clearPaymentMethod, clearShippingAddress, clearOrderItems} = addCartSlice.actions;
+export const {
+    addToCart,
+    removeCart,
+    clearCart,
+    saveShippingAddress,
+    savePaymentMethod,
+    clearPaymentMethod,
+    clearShippingAddress,
+    clearOrderItems,
+    saveOrderDetails,
+    clearOrderDetails,
+} = addCartSlice.actions;
 export default addCartSlice.reducer;
 
 

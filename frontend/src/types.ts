@@ -19,3 +19,11 @@ export interface OrderItem {
     product: string;
     countInStock: number;
 }
+
+export type shippingAddress =  {
+    address: string,
+    city: string,
+    postalCode: string,
+    country: string,
+    phone: string,
+}
