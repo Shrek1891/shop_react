@@ -86,7 +86,17 @@ export const api = createApi({
                     'Authorization': `Bearer ${token}`,
                 },
             })
-        })
+        }),
+        updateOrderToPaid: builder.mutation({
+            query: ({id, token}) => ({
+                url: `orders/${id}/pay/`,
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+            })
+        }),
     }),
 });
 
@@ -98,7 +108,8 @@ export const {
     useGetUserProfileQuery,
     useUpdateUserProfileMutation,
     useAddOrderItemsMutation,
-    useGetOrderDetailsQuery
+    useGetOrderDetailsQuery,
+    useUpdateOrderToPaidMutation,
 } = api;
 
 

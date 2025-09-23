@@ -1,3 +1,5 @@
+import datetime
+
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -64,3 +66,13 @@ def get_orders(request, pk):
     except:
         message = {"detail": "Order not found"}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def update_order_to_paid(request, pk):
+    oder = Order.objects.get(_id=pk)
+    oder.isPaid = True
+    oder.paidAt = datetime.datetime.now()
+    oder.save()
+    return Response('order paid')
