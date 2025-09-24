@@ -1,10 +1,11 @@
 import {useDispatch, useSelector} from "react-redux";
 import type {RootState} from "../store/store.ts";
 import {Link, useNavigate} from "react-router-dom";
-import {useGetUserProfileQuery, useUpdateUserProfileMutation} from "../store/api.ts";
+import {useGetMyOrdersQuery, useGetUserProfileQuery, useUpdateUserProfileMutation} from "../store/api.ts";
 import {useEffect, useState} from "react";
 import Loading from "../components/Loading.tsx";
 import {updateUserProfile} from "../features/users.ts";
+import type {Order} from "../types.ts";
 
 const ProfileScreen = () => {
     const {user} = useSelector((state: RootState) => state.users)
@@ -13,13 +14,13 @@ const ProfileScreen = () => {
     if (!user) {
         navigate('/login')
     }
-    const {data: profile, isLoading, error} = useGetUserProfileQuery({id: user.id, token: user.access})
+    const {data: profile, isLoading} = useGetUserProfileQuery({id: user.id, token: user.access})
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
-    const [isConfirmPassword, setIsConfirmPassword] = useState(false)
-    const [updateProfile, {isLoading: updateProfileLoading, error: updateProfileError}] = useUpdateUserProfileMutation()
+    const {data, isLoading: ordersLoading} = useGetMyOrdersQuery({token: user.access})
+    const [updateProfile, {isLoading: updateProfileLoading}] = useUpdateUserProfileMutation()
     const handleUpdateProfile = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (password === confirmPassword) {
@@ -42,10 +43,9 @@ const ProfileScreen = () => {
         if (!profile) return
         setName(profile.name)
         setEmail(profile.email)
-        setPassword(profile.password)
-        setConfirmPassword(profile.password)
     }, [profile])
-    return isLoading || updateProfileLoading ? <Loading/> : (
+
+    return isLoading || updateProfileLoading || ordersLoading ? <Loading/> : (
         <div className="flex justify-between items-center">
             <div className="flex flex-col items-center">
                 <div className="bg-gradient-to-br  flex justify-center items-center w-full ">
@@ -105,7 +105,8 @@ const ProfileScreen = () => {
                                            id="confirmPassword"
                                            placeholder="Confirm Password"
                                            required
-                                           onChange={(e) => setConfirmPassword(e.target.value)}/>
+                                           onChange={(e) => setConfirmPassword(e.target.value)}
+                                    />
 
                                 </div>
                             </div>
@@ -136,8 +137,28 @@ const ProfileScreen = () => {
                     </form>
                 </div>
             </div>
-            <div>
-                <h3>Order</h3>
+            <div className="flex flex-col gap-4 mt-4 w-1/2">
+                <h3 className="text-2xl font-bold text-gray-800 mb-4">Order</h3>
+                {ordersLoading ? <Loading/> : (
+                    <div className="flex flex-col gap-4 ">
+                        <div className="flex justify-between items-center gap-4">
+                            <p className="font-semibold flex-1 text-center">Order ID</p>
+                            <p className="text-gray-500 flex-1 text-center">Created At</p>
+                            <p className="text-gray-500 flex-1 text-center">Total Price</p>
+                            <p className="text-gray-500 flex-1 text-center">Paid</p>
+                            <p className="text-gray-500 flex-1 text-center">Delivered</p>
+                        </div>
+                        {data?.map((order: Order) => (
+                            <div key={order._id} className="flex justify-between items-center gap-4 border-b pb-4">
+                                <p className="font-semibold flex-1 truncate text-center ">{order._id}</p>
+                                <p className="text-gray-500 flex-1 text-center">{new Date(order.createdAt).toLocaleDateString()}</p>
+                                <p className="text-gray-500 flex-1 text-center">{order.totalPrice}</p>
+                                <p className="text-gray-500 flex-1 text-center">{order.isPaid ? new Date(order.paidAt).toLocaleDateString() : 'Not Paid'}</p>
+                                <p className="text-gray-500 flex-1 text-center">{order.isDelivered ? 'Delivered' : 'Not Delivered'}</p>
+                            </div>
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
     )

@@ -27,3 +27,19 @@ export type shippingAddress =  {
     country: string,
     phone: string,
 }
+
+export type Order = {
+    _id: string;
+    user: string;
+    paymentMethod: string;
+    taxPrice: number;
+    shippingPrice: number;
+    totalPrice: number;
+    isPaid: boolean;
+    paidAt: string;
+    isDelivered: boolean;
+    deliveredAt: string;
+    createdAt: string;
+    shippingAddress: shippingAddress;
+    orderItems: OrderItem[];
+}

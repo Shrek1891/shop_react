@@ -51,6 +51,7 @@ def add_order_items(request):
     serializer = OrderSerializer(order, many=True)
     return Response(order._id, status=status.HTTP_201_CREATED)
 
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_orders(request, pk):
@@ -76,3 +77,12 @@ def update_order_to_paid(request, pk):
     oder.paidAt = datetime.datetime.now()
     oder.save()
     return Response('order paid')
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_my_orders(request):
+    user = request.user
+    orders = Order.objects.filter(user=user)
+    serializer = OrderSerializer(orders, many=True)
+    return Response(serializer.data)

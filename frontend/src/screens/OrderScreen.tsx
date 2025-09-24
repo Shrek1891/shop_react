@@ -1,49 +1,65 @@
 import Shipping from "../components/ui/shipping.tsx";
 import {useDispatch} from "react-redux";
-import {useGetOrderDetailsQuery} from "../store/api.ts";
-import {useNavigate, useParams} from "react-router-dom";
+import {useGetOrderDetailsQuery, useUpdateOrderToPaidMutation} from "../store/api.ts";
+import {useParams} from "react-router-dom";
 import Loading from "../components/Loading.tsx";
 import PayMethod from "../components/ui/payMethod.tsx";
 import CardOrderList from "../components/CardOrderList.tsx";
 import OrderSummary from "../components/OrderSummary.tsx";
 import {saveOrderDetails} from "../features/addCart.ts";
+import type {OrderItem} from "../types.ts";
+import SimpleBtn from "../components/ui/simpleBtn.tsx";
+import {useEffect, useState} from "react";
 
 const OrderScreen = () => {
     const dispatch = useDispatch()
-    const navigate = useNavigate()
     const user = JSON.parse(localStorage.getItem('user') || '{}')
     const {id} = useParams()
-    const {data, error, isLoading} = useGetOrderDetailsQuery({id, token: user.token})
+    const [isPaidSuccess, setIsPaidSuccess] = useState(false)
+    const {data, isLoading} = useGetOrderDetailsQuery({id, token: user.token})
+    const [updateOrderToPaid] = useUpdateOrderToPaidMutation()
+    useEffect(() => {
+        if (data) {
+            setIsPaidSuccess(data.isPaid)
+        }
+    }, [data])
+
+    const toPayNow = async (id: string | undefined) => {
+        await updateOrderToPaid({id, token: user.token})
+        setIsPaidSuccess(true)
+    }
     if (isLoading) {
         return <Loading/>
-    } else {
-        if (data) {
-            dispatch(saveOrderDetails(data))
-            const {
-                paymentMethod,
-                order_items: cartItems,
-                itemsPrice,
-                shippingPrice,
-                taxPrice,
-                totalPrice,
-                isPaid,
-                isDelivered
-            } = data
-            return (
-                <div className="flex justify-between items-center gap-4 flex-col md:flex-row ">
-                    <div className="w-full max-w-3xl mx-auto p-8 h-full">
-                        <Shipping isFull={true} isDelivered={isDelivered}/>
-                        <PayMethod paymentMethod={paymentMethod} isPaid={isPaid}/>
-                        <CardOrderList cartItems={cartItems}/>
-                    </div>
-                    <div>
-                        <OrderSummary itemsPrice={itemsPrice} shippingPrice={shippingPrice} taxPrice={taxPrice}
-                                      totalPrice={totalPrice}/>
-                    </div>
-                </div>
-            )
-        }
     }
+    dispatch(saveOrderDetails(data))
+    const {
+        paymentMethod,
+        order_items: cartItems,
+        shippingPrice,
+        taxPrice,
+        totalPrice,
+        isPaid,
+        isDelivered
+    } = data
+
+    const itemsPrice = cartItems.reduce((a: number, b: OrderItem) => a + (b.qty || 0) * b.price, 0).toFixed(2)
+    return (
+        <div className="flex justify-between items-center gap-4 flex-col md:flex-row ">
+            <div className="w-full max-w-3xl mx-auto p-8 h-full">
+                <Shipping isFull={true} isDelivered={isDelivered}/>
+                <PayMethod paymentMethod={paymentMethod} isPaid={isPaidSuccess}/>
+                <CardOrderList cartItems={cartItems}/>
+            </div>
+            <div className="w-full max-w-3xl mx-auto p-8 h-full">
+                <OrderSummary itemsPrice={itemsPrice} shippingPrice={shippingPrice} taxPrice={taxPrice}
+                              totalPrice={totalPrice}/>
+
+                {isPaidSuccess ? <p>Order Paid : {new Date(data.paidAt).toLocaleDateString()}</p> :
+                    <SimpleBtn onClick={() => toPayNow(id)} text={"Pay Now (This demo, it will not work)"}/>}
+            </div>
+
+        </div>
+    )
 
 
 }
