@@ -117,6 +117,16 @@ export const api = createApi({
                 },
             })
         }),
+        deleteUser: builder.mutation({
+            query: ({id, token}) => ({
+                url: `users/${id}/delete/`,
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+            })
+        }),
     }),
 });
 
@@ -132,6 +142,7 @@ export const {
     useUpdateOrderToPaidMutation,
     useGetMyOrdersQuery,
     useGetUsersQuery,
+    useDeleteUserMutation
 } = api;
 
 

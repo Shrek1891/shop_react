@@ -20,8 +20,8 @@ const OrderScreen = () => {
     const [updateOrderToPaid] = useUpdateOrderToPaidMutation()
     useEffect(() => {
         if (!data) return;
+        dispatch(saveOrderDetails(data))
         setIsPaidSuccess(data.isPaid)
-
     }, [data])
 
     const toPayNow = async (id: string | undefined) => {
@@ -31,15 +31,21 @@ const OrderScreen = () => {
     if (isLoading) {
         return <Loading/>
     }
-    dispatch(saveOrderDetails(data))
+    if (!data) {
+        return <p>Order not found</p>
+    }
     const {
         paymentMethod,
         order_items: cartItems,
         shippingPrice,
         taxPrice,
         totalPrice,
-        isDelivered
+        isDelivered,
+        user: userOrder
     } = data
+    if (userOrder.id !== user.id) {
+        return <p className="text-red-500 text-2xl flex justify-center items-center h-screen">Order not found</p>
+    }
 
     const itemsPrice = cartItems.reduce((a: number, b: OrderItem) => a + (b.qty || 0) * b.price, 0).toFixed(2)
     return (
@@ -54,7 +60,8 @@ const OrderScreen = () => {
                               totalPrice={totalPrice}/>
 
                 {isPaidSuccess ? <p>Order Paid : {new Date(data.paidAt).toLocaleDateString()}</p> :
-                    <SimpleBtn onClick={() => toPayNow(id)} text={"Pay Now (This demo, it will not work)"}/>}
+                    <SimpleBtn onClick={async () => await toPayNow(id)}
+                               text={"Pay Now (This demo, it will not work)"}/>}
             </div>
 
         </div>

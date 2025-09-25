@@ -73,9 +73,6 @@ const Header = () => {
                                 <option value="Logout">
                                     Logout
                                 </option>
-                                {userLogin.is_admin && <option value="Users">
-                                    Users
-                                </option>}
                             </select>
                             : <Link
                                 to="/login"

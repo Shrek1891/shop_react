@@ -91,6 +91,14 @@ export const addCartSlice = createSlice({
             state.usersList = action.payload;
             localStorage.setItem("usersList", JSON.stringify(action.payload));
         },
+        clearUsersList: (state) => {
+            state.usersList = [];
+            localStorage.setItem("usersList", JSON.stringify(state.usersList));
+        },
+        updateUserList: (state, action) => {
+            state.usersList = action.payload;
+            localStorage.setItem("usersList", JSON.stringify(action.payload));
+        },
     },
 })
 
@@ -105,7 +113,9 @@ export const {
     clearOrderItems,
     saveOrderDetails,
     clearOrderDetails,
-    saveUsersList
+    saveUsersList,
+    clearUsersList,
+    updateUserList,
 } = addCartSlice.actions;
 export default addCartSlice.reducer;
 
