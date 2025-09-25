@@ -107,6 +107,16 @@ export const api = createApi({
                 },
             })
         }),
+        getUsers: builder.query({
+            query: (token) => ({
+                url: 'users/',
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+            })
+        }),
     }),
 });
 
@@ -120,7 +130,8 @@ export const {
     useAddOrderItemsMutation,
     useGetOrderDetailsQuery,
     useUpdateOrderToPaidMutation,
-    useGetMyOrdersQuery
+    useGetMyOrdersQuery,
+    useGetUsersQuery,
 } = api;
 
 

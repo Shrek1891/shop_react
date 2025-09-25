@@ -13,6 +13,7 @@ import ShippingScreen from "./screens/SchippingScreen.tsx";
 import PaymentScreen from "./screens/PaymentScreen.tsx";
 import PlaceOrderScreen from "./screens/PlaceOrderScreen.tsx";
 import OrderScreen from "./screens/OrderScreen.tsx";
+import UserListScreen from "./screens/userListScreen.tsx";
 
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
                         <Route path="/confirm" element={<PlaceOrderScreen/>}/>
                         <Route path="/order/:id" element={<OrderScreen/>}/>
                         <Route path="/order/:id/pay" element={<OrderScreen/>}/>
+                        <Route path="/users" element={<UserListScreen/>}/>
                     </Routes>
                 </main>
                 <Footer/>

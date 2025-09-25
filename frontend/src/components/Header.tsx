@@ -17,6 +17,7 @@ const Header = () => {
     const dispatch = useDispatch()
     const userLogin = useSelector((state: RootState) => state.users.user)
     const logoutHandler = () => {
+
         dispatch(clearCart())
         dispatch(logout())
     }
@@ -29,8 +30,22 @@ const Header = () => {
                 } else if (e.target.value === 'Logout') {
                     logoutHandler();
                     navigate('/login');
+                } else if (e.target.value === 'Users') {
+                    navigate('/users');
                 }
         }
+    const chooseAdminHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        if (e.target.value)
+            if (e.target.value === 'Users') {
+                navigate('/users');
+            } else if (e.target.value === 'Orders') {
+                navigate('/orders');
+            } else if (e.target.value === 'Products') {
+                navigate('/products');
+            } else if (e.target.value === 'Admins Panel') {
+                navigate('/');
+            }
+    }
     return (
         <header className="bg-blue-900 text-white shadow sticky top-0 z-50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
@@ -51,13 +66,16 @@ const Header = () => {
                                 className="bg-blue-900 text-white"
                                 value={locate.pathname === '/profile' ? 'Profile' : userLogin.name}
                             >
-                                <option>{userLogin.name}</option>
+                                <option>{userLogin.name ? userLogin.name : userLogin.username}</option>
                                 <option value="Profile">
                                     Profile
                                 </option>
                                 <option value="Logout">
                                     Logout
                                 </option>
+                                {userLogin.is_admin && <option value="Users">
+                                    Users
+                                </option>}
                             </select>
                             : <Link
                                 to="/login"
@@ -65,6 +83,19 @@ const Header = () => {
                                 <CgLogIn/>
                                 Login
                             </Link>
+                        }
+                        {
+                            userLogin !== null && userLogin.is_admin &&
+                            <select
+                                onChange={chooseAdminHandler}
+                                className="bg-blue-900 text-white"
+                                defaultValue="Admins Panel"
+                            >
+                                <option value="Admins Panel">Admins Panel</option>
+                                <option value="Users">Users</option>
+                                <option value="Orders">Orders</option>
+                                <option value="Products">Products</option>
+                            </select>
                         }
                     </nav>
                     <div className="hidden md:block">

@@ -19,9 +19,9 @@ const OrderScreen = () => {
     const {data, isLoading} = useGetOrderDetailsQuery({id, token: user.token})
     const [updateOrderToPaid] = useUpdateOrderToPaidMutation()
     useEffect(() => {
-        if (data) {
-            setIsPaidSuccess(data.isPaid)
-        }
+        if (!data) return;
+        setIsPaidSuccess(data.isPaid)
+
     }, [data])
 
     const toPayNow = async (id: string | undefined) => {
@@ -38,7 +38,6 @@ const OrderScreen = () => {
         shippingPrice,
         taxPrice,
         totalPrice,
-        isPaid,
         isDelivered
     } = data
 

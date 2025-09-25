@@ -6,6 +6,7 @@ const localStorageShippingAddress = localStorage.getItem("shippingAddress");
 const localStoragePaymentMethod = localStorage.getItem("paymentMethod");
 const localStorageOrderItems = localStorage.getItem("orderItems");
 const localStorageOrderDetails = localStorage.getItem("orderDetails");
+const localStorageUsersList = localStorage.getItem("usersList");
 import type {shippingAddress} from "../types.ts";
 
 interface initialState {
@@ -14,6 +15,8 @@ interface initialState {
     paymentMethod: string;
     orderItems: OrderItem[];
     orderDetails: OrderItem[];
+    usersList: string[];
+
 }
 
 
@@ -23,6 +26,7 @@ const initialState: initialState = {
     paymentMethod: localStoragePaymentMethod ? JSON.parse(localStoragePaymentMethod) : "",
     orderItems: localStorageOrderItems ? JSON.parse(localStorageOrderItems) : [],
     orderDetails: localStorageOrderDetails ? JSON.parse(localStorageOrderDetails) : [],
+    usersList: localStorageUsersList ? JSON.parse(localStorageUsersList) : [],
 }
 
 export const addCartSlice = createSlice({
@@ -83,6 +87,10 @@ export const addCartSlice = createSlice({
             state.orderDetails = [];
             localStorage.setItem("orderDetails", JSON.stringify(state.orderDetails));
         },
+        saveUsersList: (state, action) => {
+            state.usersList = action.payload;
+            localStorage.setItem("usersList", JSON.stringify(action.payload));
+        },
     },
 })
 
@@ -97,6 +105,7 @@ export const {
     clearOrderItems,
     saveOrderDetails,
     clearOrderDetails,
+    saveUsersList
 } = addCartSlice.actions;
 export default addCartSlice.reducer;
 
