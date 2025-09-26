@@ -46,7 +46,6 @@ const OrderScreen = () => {
     if (userOrder.id !== user.id) {
         return <p className="text-red-500 text-2xl flex justify-center items-center h-screen">Order not found</p>
     }
-
     const itemsPrice = cartItems.reduce((a: number, b: OrderItem) => a + (b.qty || 0) * b.price, 0).toFixed(2)
     return (
         <div className="flex justify-between items-center gap-4 flex-col md:flex-row ">
@@ -56,8 +55,12 @@ const OrderScreen = () => {
                 <CardOrderList cartItems={cartItems}/>
             </div>
             <div className="w-full max-w-3xl mx-auto p-8 h-full">
-                <OrderSummary itemsPrice={itemsPrice} shippingPrice={shippingPrice} taxPrice={taxPrice}
-                              totalPrice={totalPrice}/>
+                <OrderSummary
+                    itemsPrice={itemsPrice}
+                    shippingPrice={shippingPrice}
+                    taxPrice={taxPrice}
+                    totalPrice={totalPrice}
+                />
 
                 {isPaidSuccess ? <p>Order Paid : {new Date(data.paidAt).toLocaleDateString()}</p> :
                     <SimpleBtn onClick={async () => await toPayNow(id)}

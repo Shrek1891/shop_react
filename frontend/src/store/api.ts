@@ -127,6 +127,27 @@ export const api = createApi({
                 },
             })
         }),
+        getUserById: builder.query({
+            query: ({id, token}) => ({
+                url: `users/get/${id}/`,
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+            })
+        }),
+        updateUser: builder.mutation({
+            query: ({user, token, id}) => ({
+                url: `users/update/${id}/`,
+                method: 'PUT',
+                body: user,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+            })
+        }),
     }),
 });
 
@@ -142,7 +163,9 @@ export const {
     useUpdateOrderToPaidMutation,
     useGetMyOrdersQuery,
     useGetUsersQuery,
-    useDeleteUserMutation
+    useDeleteUserMutation,
+    useGetUserByIdQuery,
+    useUpdateUserMutation,
 } = api;
 
 
