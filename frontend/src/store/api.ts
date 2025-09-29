@@ -115,6 +115,7 @@ export const api = createApi({
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`,
                 },
+                invalidatesTags: ['Users'],
             })
         }),
         deleteUser: builder.mutation({
@@ -148,6 +149,16 @@ export const api = createApi({
                 },
             })
         }),
+        deleteProduct: builder.mutation({
+            query: ({id, token}) => ({
+                url: `products/delete/${id}/`,
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+            })
+        }),
     }),
 });
 
@@ -166,6 +177,7 @@ export const {
     useDeleteUserMutation,
     useGetUserByIdQuery,
     useUpdateUserMutation,
+    useDeleteProductMutation,
 } = api;
 
 

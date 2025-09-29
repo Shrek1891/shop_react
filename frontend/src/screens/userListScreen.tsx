@@ -2,26 +2,17 @@ import {useDeleteUserMutation, useGetUsersQuery} from "../store/api.ts";
 import Loading from "../components/Loading.tsx";
 import {Link, useNavigate} from "react-router-dom";
 import {FaEdit, FaTrashAlt} from "react-icons/fa";
+import {useEffect, useState} from "react";
 import {useDispatch} from "react-redux";
 import {saveUsersList} from "../features/addCart.ts";
-import {useEffect, useState} from "react";
 
 const UserListScreen = () => {
     const [user, _] = useState(JSON.parse(localStorage.getItem('user') || '{}'))
     const navigate = useNavigate()
-    const {data, isLoading} = useGetUsersQuery(user.token)
+    const {data, isLoading, refetch} = useGetUsersQuery(user.token)
+    const [deleteUser, {isLoading: isDeleting}] = useDeleteUserMutation()
+    const [usersList, setUsersList] = useState([])
     const dispatch = useDispatch()
-    const [deleteUser] = useDeleteUserMutation()
-
-    useEffect(() => {
-        if (!data) return;
-        if (!user.is_admin) {
-            navigate('/login')
-            return;
-        }
-        dispatch(saveUsersList(data))
-
-    }, [data, deleteUser])
     if (isLoading) {
         return <Loading/>
     }
@@ -38,8 +29,14 @@ const UserListScreen = () => {
             alert('You cannot delete admin')
             return;
         }
-        await deleteUser({id, token: user.token})
-        window.location.reload()
+        try {
+            await deleteUser({id, token: user.token}).unwrap()
+            setUsersList(usersList.filter((user: any) => user.id !== id))
+            dispatch(saveUsersList(usersList.filter((user: any) => user.id !== id)))
+            refetch()
+        } catch (error) {
+            console.log(error)
+        }
     }
     return (
         <div className="container mx-auto">

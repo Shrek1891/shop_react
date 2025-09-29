@@ -1,5 +1,6 @@
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 
 from base.models import Product
@@ -19,3 +20,27 @@ def get_product(request, pk):
     product = Product.objects.get(_id=pk)
     serializer = ProductSerializer(product)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['DELETE'])
+@permission_classes([IsAdminUser])
+def delete_product(request, pk):
+    product = Product.objects.get(_id=pk)
+    product.delete()
+    return Response("Product deleted", status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+@permission_classes([IsAdminUser])
+def create_product(request):
+    data = request.data
+    product = Product.objects.create(
+        user=request.user,
+        name=data['name'],
+        price=data['price'],
+        brand=data['brand'],
+        category=data['category'],
+        countInStock=data['countInStock'],
+        description=data['description'],
+    )
+    serializer = ProductSerializer(product, many=False)
+    return Response(serializer.data, status=status.HTTP_201_CREATED)

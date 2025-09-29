@@ -1,23 +1,38 @@
 import {FaEdit, FaTrashAlt, FaUserAstronaut} from "react-icons/fa";
 import {MdMarkEmailUnread} from "react-icons/md";
 import SimpleBtn from "../components/ui/simpleBtn.tsx";
-import {useGetProductsQuery} from "../store/api.ts";
+import {useDeleteProductMutation, useDeleteUserMutation, useGetProductsQuery, useGetUsersQuery} from "../store/api.ts";
 import Loading from "../components/Loading.tsx";
 import {Link, useNavigate} from "react-router-dom";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
+import {useDispatch} from "react-redux";
+import {saveUsersList} from "../features/addCart.ts";
 
 const ListProductScreen = () => {
+    const [user, _] = useState(JSON.parse(localStorage.getItem('user') || '{}'))
     const navigate = useNavigate()
-    const deleteHandler = async ({id, token}: { id: string, token: string }) => {
-        console.log(id, token)
+    const {data, isLoading, refetch} = useGetProductsQuery(user.token)
+    const [deleteUser, {isLoading: isDeleting}] = useDeleteProductMutation()
+    const [productsList, setProductsList] = useState([])
+    const dispatch = useDispatch()
+    useEffect(() => {
+        if (!data) return;
+        setProductsList(data)
+    }, [data]);
+    const deleteHandler = async (id: string) => {
+        if (!user.is_admin) {
+            navigate('/login')
+            return;
+        }
+        try {
+            await deleteUser({id, token: user.token})
+            setProductsList(productsList.filter((user: any) => user.id !== id))
+            dispatch(saveUsersList(productsList.filter((user: any) => user.id !== id)))
+            refetch()
+        } catch (error) {
+            console.log(error)
+        }
     }
-    const user = JSON.parse(localStorage.getItem('user') || '{}')
-    const {data: products, error, isLoading} = useGetProductsQuery({token: user.token})
-    if (isLoading) {
-        return <Loading/>
-    }
-
-
     return (
         <div className="container mx-auto">
             <div className="flex justify-between items-center mb-8">
@@ -40,7 +55,7 @@ const ListProductScreen = () => {
                 </tr>
                 </thead>
                 <tbody>
-                {products.map((product: any) => (
+                {productsList.map((product: any) => (
                     <tr key={product._id}>
                         <td className="border border-gray-300 px-4 py-2">{product._id}</td>
                         <td className="border border-gray-300 px-4 py-2">{product.name}</td>

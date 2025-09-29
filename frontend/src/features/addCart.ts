@@ -6,7 +6,6 @@ const localStorageShippingAddress = localStorage.getItem("shippingAddress");
 const localStoragePaymentMethod = localStorage.getItem("paymentMethod");
 const localStorageOrderItems = localStorage.getItem("orderItems");
 const localStorageOrderDetails = localStorage.getItem("orderDetails");
-const localStorageUsersList = localStorage.getItem("usersList");
 import type {shippingAddress} from "../types.ts";
 
 interface initialState {
@@ -16,6 +15,7 @@ interface initialState {
     orderItems: OrderItem[];
     orderDetails: OrderItem[];
     usersList: string[];
+    productsList: string[];
 
 }
 
@@ -26,7 +26,8 @@ const initialState: initialState = {
     paymentMethod: localStoragePaymentMethod ? JSON.parse(localStoragePaymentMethod) : "",
     orderItems: localStorageOrderItems ? JSON.parse(localStorageOrderItems) : [],
     orderDetails: localStorageOrderDetails ? JSON.parse(localStorageOrderDetails) : [],
-    usersList: localStorageUsersList ? JSON.parse(localStorageUsersList) : [],
+    usersList: [],
+    productsList: [],
 }
 
 export const addCartSlice = createSlice({
@@ -89,16 +90,17 @@ export const addCartSlice = createSlice({
         },
         saveUsersList: (state, action) => {
             state.usersList = action.payload;
-            localStorage.setItem("usersList", JSON.stringify(action.payload));
         },
         clearUsersList: (state) => {
             state.usersList = [];
-            localStorage.setItem("usersList", JSON.stringify(state.usersList));
         },
         updateUserList: (state, action) => {
             state.usersList = action.payload;
-            localStorage.setItem("usersList", JSON.stringify(action.payload));
         },
+        updateProductsList: (state, action) => {
+            state.productsList = action.payload;
+        },
+
     },
 })
 
