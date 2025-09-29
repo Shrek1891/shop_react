@@ -29,6 +29,7 @@ def delete_product(request, pk):
     product.delete()
     return Response("Product deleted", status=status.HTTP_200_OK)
 
+
 @api_view(['POST'])
 @permission_classes([IsAdminUser])
 def create_product(request):
@@ -44,3 +45,19 @@ def create_product(request):
     )
     serializer = ProductSerializer(product, many=False)
     return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+@api_view(['PUT'])
+@permission_classes([IsAdminUser])
+def update_product(request, pk):
+    product = Product.objects.get(_id=pk)
+    data = request.data
+    product.name = data['name']
+    product.price = data['price']
+    product.brand = data['brand']
+    product.category = data['category']
+    product.countInStock = data['countInStock']
+    product.description = data['description']
+    product.save()
+    serializer = ProductSerializer(product, many=False)
+    return Response(serializer.data, status=status.HTTP_200_OK)
