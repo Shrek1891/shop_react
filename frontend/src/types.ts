@@ -9,6 +9,7 @@ export interface Product {
     numReviews: number;
     countInStock: number;
     createdAt: string;
+    brand: string;
 }
 
 export interface OrderItem {

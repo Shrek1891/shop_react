@@ -36,12 +36,12 @@ def create_product(request):
     data = request.data
     product = Product.objects.create(
         user=request.user,
-        name=data['name'],
-        price=data['price'],
-        brand=data['brand'],
-        category=data['category'],
-        countInStock=data['countInStock'],
-        description=data['description'],
+        name='Sample name',
+        price=0,
+        brand='Sample brand',
+        category='Sample category',
+        countInStock=0,
+        description='Sample description',
     )
     serializer = ProductSerializer(product, many=False)
     return Response(serializer.data, status=status.HTTP_201_CREATED)

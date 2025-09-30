@@ -159,6 +159,27 @@ export const api = createApi({
                 },
             })
         }),
+        createProduct: builder.mutation({
+            query: ({ token}) => ({
+                url: 'products/create/',
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+            })
+        }),
+        updateProduct: builder.mutation({
+            query: ({product, token, id}) => ({
+                url: `products/update/${id}/`,
+                method: 'PUT',
+                body: product,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+            })
+        }),
     }),
 });
 
@@ -178,6 +199,8 @@ export const {
     useGetUserByIdQuery,
     useUpdateUserMutation,
     useDeleteProductMutation,
+    useCreateProductMutation,
+    useUpdateProductMutation,
 } = api;
 
 

@@ -1,7 +1,13 @@
 import {FaEdit, FaTrashAlt, FaUserAstronaut} from "react-icons/fa";
 import {MdMarkEmailUnread} from "react-icons/md";
 import SimpleBtn from "../components/ui/simpleBtn.tsx";
-import {useDeleteProductMutation, useDeleteUserMutation, useGetProductsQuery, useGetUsersQuery} from "../store/api.ts";
+import {
+    useCreateProductMutation,
+    useDeleteProductMutation,
+    useDeleteUserMutation,
+    useGetProductsQuery,
+    useGetUsersQuery
+} from "../store/api.ts";
 import Loading from "../components/Loading.tsx";
 import {Link, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
@@ -13,6 +19,7 @@ const ListProductScreen = () => {
     const navigate = useNavigate()
     const {data, isLoading, refetch} = useGetProductsQuery(user.token)
     const [deleteUser, {isLoading: isDeleting}] = useDeleteProductMutation()
+    const [createProduct, {isLoading: isCreating}] = useCreateProductMutation()
     const [productsList, setProductsList] = useState([])
     const dispatch = useDispatch()
     useEffect(() => {
@@ -34,12 +41,14 @@ const ListProductScreen = () => {
         }
     }
     return (
-        <div className="container mx-auto">
+        <div className="container mx-auto h-screen">
             <div className="flex justify-between items-center mb-8">
                 <h1 className="text-3xl font-bold mb-8 text-center">Products List</h1>
                 <SimpleBtn
                     text="Add Product"
-                    onClick={() => {
+                    onClick={async () => {
+                        const data = await createProduct({token: user.token})
+                        navigate(`/product/${data.data._id}/update`)
                     }}
                 />
             </div>
@@ -65,7 +74,7 @@ const ListProductScreen = () => {
                         <td className="border border-gray-300 px-4 py-2 flex gap-2 items-center justify-between">
                             <Link
                                 className="text-blue-500 hover:text-blue-600"
-                                to={`/user/${user.id}`}
+                                to={`/product/${product._id}/update`}
                             >
                                 <FaEdit/>
                             </Link>

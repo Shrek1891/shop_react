@@ -16,6 +16,7 @@ import OrderScreen from "./screens/OrderScreen.tsx";
 import UserListScreen from "./screens/userListScreen.tsx";
 import UserEditScreen from "./screens/UserEditScreen.tsx";
 import ListProductScreen from "./screens/ListProducktScreen.tsx";
+import UpdateProductScreen from "./screens/UpdateProductScreen.tsx";
 
 
 function App() {
@@ -23,7 +24,7 @@ function App() {
         <Provider store={store}>
             <Router>
                 <Header/>
-                <main className="container mx-auto py-2 h-screen">
+                <main className="container mx-auto py-2 ">
                     <Routes>
                         <Route path="/" element={<HomeScreen/>}/>
                         <Route path="/product/:id" element={<ProductScreen/>}/>
@@ -38,7 +39,8 @@ function App() {
                         <Route path="/order/:id/pay" element={<OrderScreen/>}/>
                         <Route path="/users" element={<UserListScreen/>}/>
                         <Route path="/user/:id/" element={<UserEditScreen/>}/>
-                        <Route path="/products" element={<ListProductScreen/>}/>
+                        <Route path="/products" element={<ListProductScreen key={Date.now()}/>}/>
+                        <Route path="/product/:id/update" element={<UpdateProductScreen/>}/>
                     </Routes>
                 </main>
                 <Footer/>
