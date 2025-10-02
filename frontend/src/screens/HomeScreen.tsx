@@ -19,7 +19,7 @@ const HomeScreen = () => {
         return <Error/>
     }
     return (
-        <div className="flex flex-col items-center justify-center h-screen">
+        <div className="flex flex-col items-center justify-center h-full">
             <h1 className="text-3xl font-bold mb-8 text-center">List of products</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
                 {products.map((product: Product) => {

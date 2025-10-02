@@ -1,15 +1,21 @@
 import {useSelector} from "react-redux";
-import {useGetOrdersQuery} from "../store/api.ts";
-import {Link} from "react-router-dom";
-import {FaEdit, FaTrashAlt} from "react-icons/fa";
+import {useGetOrdersQuery, useUpdateOrderToDeliveredMutation} from "../store/api.ts";
+import {Link, useNavigate} from "react-router-dom";
+import {FaClipboardCheck, FaEdit, FaTrashAlt} from "react-icons/fa";
 import {useEffect, useState} from "react";
 import Loading from "../components/Loading.tsx";
 
 const OrderListScreen = () => {
     const userInfo = useSelector((state: any) => state.users.user)
-    const {data, isLoading, error} = useGetOrdersQuery({token: userInfo.token})
+    const {data, isLoading, error, refetch} = useGetOrdersQuery({token: userInfo.token})
+    const [updateOrderToDelivered, {isLoading: isUpdating}] = useUpdateOrderToDeliveredMutation()
+    const navigate = useNavigate()
     const [orders, setOrders] = useState([])
-        useEffect(() => {
+    useEffect(() => {
+        if (!userInfo) {
+            navigate('/login')
+            return
+        }
         if (!data) return
         setOrders(data)
     }, [data])
@@ -17,9 +23,11 @@ const OrderListScreen = () => {
     if (isLoading) {
         return <Loading/>
     }
-    console.log(orders)
-    const deleteHandler = async (id: string) => {
-        console.log(id)
+
+
+    const deliveredHandler = async (id: string) => {
+        await updateOrderToDelivered({id, token: userInfo.token})
+        refetch()
     }
     return (
         <div className="container mx-auto h-screen">
@@ -45,7 +53,6 @@ const OrderListScreen = () => {
                         <td className="border border-gray-300 px-4 py-2">{order.totalPrice}</td>
                         <td className="border border-gray-300 px-4 py-2">{order.isPaid ? 'Yes' : 'No'}</td>
                         <td className="border border-gray-300 px-4 py-2">{order.isDelivered ? 'Yes' : 'No'}</td>
-
                         <td className="border border-gray-300 px-4 py-2 flex gap-2 items-center justify-between">
                             <Link
                                 className="text-blue-500 hover:text-blue-600"
@@ -54,11 +61,12 @@ const OrderListScreen = () => {
                                 <FaEdit/>
                             </Link>
                             <button
-                                onClick={async () => await deleteHandler(order._id)}
-                                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+                                onClick={() => deliveredHandler(order._id)}
+                                className={` text-white px-4 py-2 rounded ${order.isDelivered ? 'bg-green-500' : 'bg-red-500'}`}
                             >
-                                <FaTrashAlt/>
+                                <FaClipboardCheck/>
                             </button>
+
                         </td>
                     </tr>
                 ))}

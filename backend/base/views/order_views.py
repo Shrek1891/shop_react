@@ -100,3 +100,12 @@ def get_order_by_id(request, pk):
     order = Order.objects.get(_id=pk)
     serializer = OrderSerializer(order, many=False)
     return Response(serializer.data)
+
+@api_view(['PUT'])
+@permission_classes([IsAdminUser])
+def update_order_to_delivered(request, pk):
+    order = Order.objects.get(_id=pk)
+    order.isDelivered = True
+    order.deliveredAt = datetime.datetime.now()
+    order.save()
+    return Response('order delivered')

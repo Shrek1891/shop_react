@@ -25,7 +25,7 @@ function App() {
         <Provider store={store}>
             <Router>
                 <Header/>
-                <main className="container mx-auto py-2 h-full ">
+                <main className="container mx-auto py-2 ">
                     <Routes>
                         <Route path="/" element={<HomeScreen/>}/>
                         <Route path="/product/:id" element={<ProductScreen/>}/>

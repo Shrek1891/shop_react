@@ -210,6 +210,16 @@ export const api = createApi({
                 },
             })
         }),
+        updateOrderToDelivered: builder.mutation({
+            query: ({id, token}) => ({
+                url: `orders/${id}/delivered/`,
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+            })
+        }),
     }),
 });
 
@@ -234,6 +244,7 @@ export const {
     useUploadImageMutation,
     useGetOrdersQuery,
     useGetOrderByIdQuery,
+    useUpdateOrderToDeliveredMutation,
 } = api;
 
 

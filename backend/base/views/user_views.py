@@ -10,6 +10,8 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from base.seraillizers import UserSerializer, UserSerializerWithToken
 
 
+
+
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         data = super().validate(attrs)
@@ -99,3 +101,5 @@ def update_user_by_id(request, pk):
     user.save()
     serializer = UserSerializer(user, many=False)
     return Response(serializer.data)
+
+
