@@ -12,4 +12,5 @@ urlpatterns = [
     path('<str:pk>/delete/', delete_user, name='delete_user'),
     path('update/<str:pk>/', update_user_by_id, name='update_user_by_id'),
     path('get/<str:pk>/', get_user_by_id, name='get_user_by_id')
+
 ]

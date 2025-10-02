@@ -2,7 +2,7 @@ import datetime
 
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 
 from base.models import Order, ShippingAddress, Product, OrderItem
@@ -85,4 +85,18 @@ def get_my_orders(request):
     user = request.user
     orders = Order.objects.filter(user=user)
     serializer = OrderSerializer(orders, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def get_all_orders(request):
+    orders = Order.objects.all()
+    serializer = OrderSerializer(orders, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def get_order_by_id(request, pk):
+    order = Order.objects.get(_id=pk)
+    serializer = OrderSerializer(order, many=False)
     return Response(serializer.data)

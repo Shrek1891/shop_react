@@ -35,7 +35,7 @@ const ProductScreen = () => {
         return <Error/>
     }
     return (
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-center h-screen">
             <div className="w-full h-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm ">
                 <div>
                     <span className="text-3xl font-bold text-gray-900 dark:text-white"></span>

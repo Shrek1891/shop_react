@@ -160,7 +160,7 @@ export const api = createApi({
             })
         }),
         createProduct: builder.mutation({
-            query: ({ token}) => ({
+            query: ({token}) => ({
                 url: 'products/create/',
                 method: 'POST',
                 headers: {
@@ -174,6 +174,36 @@ export const api = createApi({
                 url: `products/update/${id}/`,
                 method: 'PUT',
                 body: product,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+            })
+        }),
+        uploadImage: builder.mutation({
+            query: (formData) => ({
+                url: 'products/upload/',
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+        }),
+        getOrders: builder.query({
+            query: ({token}) => ({
+                url: 'orders/',
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+            })
+        }),
+        getOrderById: builder.query({
+            query: ({id, token}) => ({
+                url: `/${id}/`,
+                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`,
@@ -201,6 +231,9 @@ export const {
     useDeleteProductMutation,
     useCreateProductMutation,
     useUpdateProductMutation,
+    useUploadImageMutation,
+    useGetOrdersQuery,
+    useGetOrderByIdQuery,
 } = api;
 
 

@@ -39,7 +39,7 @@ const UserListScreen = () => {
         }
     }
     return (
-        <div className="container mx-auto">
+        <div className="container mx-auto h-screen">
             <h1 className="text-3xl font-bold mb-8 text-center">Users</h1>
             <table className="min-w-full border-collapse border border-gray-500">
                 <thead className="bg-gray-200">

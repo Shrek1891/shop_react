@@ -17,7 +17,7 @@ const PaymentScreen = () => {
     }
 
     return (
-        <div>
+        <div className="container mx-auto p-4 max-w-6xl h-screen">
             <CheckoutSteps step="payment"/>
             <div className="w-full max-w-3xl mx-auto p-8 h-full">
                 <div className="bg-white  p-8 rounded-lg shadow-md border ">

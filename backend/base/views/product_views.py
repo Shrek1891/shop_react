@@ -61,3 +61,13 @@ def update_product(request, pk):
     product.save()
     serializer = ProductSerializer(product, many=False)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def upload_image(request):
+    data = request.data
+    product_id = data['product_id']
+    product = Product.objects.get(_id=product_id)
+    product.image = request.FILES.get('image')
+    product.save()
+    return Response(product.image.url, status=status.HTTP_200_OK)

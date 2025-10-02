@@ -46,7 +46,7 @@ const ProfileScreen = () => {
     }, [profile])
 
     return isLoading || updateProfileLoading || ordersLoading ? <Loading/> : (
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center h-screen">
             <div className="flex flex-col items-center">
                 <div className="bg-gradient-to-br  flex justify-center items-center w-full ">
                     <form onSubmit={(e) => handleUpdateProfile(e)}>

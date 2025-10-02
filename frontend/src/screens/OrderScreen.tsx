@@ -48,7 +48,7 @@ const OrderScreen = () => {
     }
     const itemsPrice = cartItems.reduce((a: number, b: OrderItem) => a + (b.qty || 0) * b.price, 0).toFixed(2)
     return (
-        <div className="flex justify-between items-center gap-4 flex-col md:flex-row ">
+        <div className="flex justify-between items-center gap-4 flex-col md:flex-row  container mx-auto p-4 max-w-6xl h-screen">
             <div className="w-full max-w-3xl mx-auto p-8 h-full">
                 <Shipping isFull={true} isDelivered={isDelivered}/>
                 <PayMethod paymentMethod={paymentMethod} isPaid={isPaidSuccess}/>

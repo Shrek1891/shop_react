@@ -1,5 +1,10 @@
 import {useNavigate, useParams} from "react-router-dom";
-import {useGetProductQuery, useGetProductsQuery, useUpdateProductMutation} from "../store/api.ts";
+import {
+    useGetProductQuery,
+    useGetProductsQuery,
+    useUpdateProductMutation,
+    useUploadImageMutation
+} from "../store/api.ts";
 import Loading from "../components/Loading.tsx";
 import {useEffect, useState} from "react";
 import type {Product} from "../types.ts";
@@ -8,8 +13,10 @@ const UpdateProductScreen = () => {
     const {id} = useParams()
     const [product, setProduct] = useState<Product>()
     const [updateProduct, {isLoading: isUpdating}] = useUpdateProductMutation()
+    const [uploadImage, {isLoading: isUploading}] = useUploadImageMutation()
     const user = JSON.parse(localStorage.getItem('user') || '{}')
-    const {data, isLoading, error} = useGetProductQuery(id)
+    const [isUpload, setIsUpload] = useState(false)
+    const {data, isLoading, error, refetch: refetchProduct} = useGetProductQuery(id)
     const navigate = useNavigate()
     const {refetch} = useGetProductsQuery(user.token)
     useEffect(() => {
@@ -17,6 +24,19 @@ const UpdateProductScreen = () => {
         setProduct(data)
     }, [data]);
     if (isLoading || isUpdating) return <Loading/>
+    const uploadFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files![0]
+        const formData = new FormData()
+        formData.append('image', file)
+        formData.append('product_id', id!)
+        setIsUpload(true)
+        await fetch("http://127.0.0.1:8000/api/products/upload/", {
+            method: "POST",
+            body: formData,
+        })
+        setIsUpload(false)
+        await refetchProduct()
+    }
 
 
     return (
@@ -29,15 +49,15 @@ const UpdateProductScreen = () => {
                     await updateProduct({id, product, token: user.token})
                     refetch()
                     navigate(`/products`)
-
-
                 }}>
                 <label htmlFor="name">Name</label>
-                <input className="border border-gray-300 rounded px-2 py-1" type="text" value={product.name} id="name"
+                <input className="border border-gray-300 rounded px-2 py-1" type="text"
+                       value={product.name ? product.name : ""} id="name"
                        required
                        onChange={(e) => setProduct({...product, name: e.target.value})}/>
                 <label htmlFor="price">Price</label>
-                <input type="text" className="border border-gray-300 rounded px-2 py-1" value={product.price} id="price"
+                <input type="text" className="border border-gray-300 rounded px-2 py-1"
+                       value={product.price ? product.price : ""} id="price"
                        required
                        onChange={(e) => setProduct({...product, price: Number(e.target.value)})}/>
                 <label htmlFor="category">Category</label>
@@ -54,12 +74,12 @@ const UpdateProductScreen = () => {
                        onChange={(e) => setProduct({...product, countInStock: Number(e.target.value)})}/>
                 <label htmlFor="description">Description</label>
                 <input type="text" className="border border-gray-300 rounded px-2 py-1" value={product.description}
-                       id="description" required
+                       id="description"
                        onChange={(e) => setProduct({...product, description: e.target.value})}/>
                 <label htmlFor="image">Image</label>
-                <input type="file" className="border border-gray-300 rounded px-2 py-1" value={product.image} id="image"
-                       required
-                       onChange={(e) => setProduct({...product, image: e.target.value})}/>
+                <div>{product.image}</div>
+                <input type="file" className="border border-gray-300 rounded px-2 py-1" id="image"
+                       required onChange={uploadFile} placeholder={product.image ? product.image : ""}/>
                 <div className="flex gap-2">
                     <button onClick={() => navigate(`/products`)}
                             className="bg-blue-500 text-white px-4 py-2 rounded w-40 self-center mt-2 cursor-pointer hover:bg-blue-600">Back
