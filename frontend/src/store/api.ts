@@ -220,6 +220,17 @@ export const api = createApi({
                 },
             })
         }),
+        createProductReview: builder.mutation({
+            query: ({id, token, reviewData}) => ({
+                url: `products/${id}/reviews/`,
+                method: 'POST',
+                body: reviewData,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+            })
+        }),
     }),
 });
 
@@ -245,6 +256,7 @@ export const {
     useGetOrdersQuery,
     useGetOrderByIdQuery,
     useUpdateOrderToDeliveredMutation,
+    useCreateProductReviewMutation
 } = api;
 
 

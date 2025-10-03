@@ -11,7 +11,6 @@ type CardProps = {
 }
 
 const Card = ({description, name, price, image, category, rating}: CardProps) => {
-    console.log(image)
     return (
         <div
             className="testimonial-card relative rounded-2xl shadow-xl overflow-hidden group

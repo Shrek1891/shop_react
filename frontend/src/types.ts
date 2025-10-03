@@ -44,3 +44,11 @@ export type Order = {
     shippingAddress: shippingAddress;
     orderItems: OrderItem[];
 }
+
+export interface Review {
+    _id: string;
+    name: string;
+    comment: string;
+    rating: number;
+    createdAt: string;
+}
