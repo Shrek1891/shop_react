@@ -1,13 +1,16 @@
 import Card from "../components/Card.tsx";
-import {Link} from "react-router-dom";
+import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
 import Loading from "../components/Loading.tsx";
 import {useGetProductsQuery} from "../store/api.ts";
 import type {Product} from "../resources.ts";
 import Error from "../components/Error404.tsx";
 
 const HomeScreen = () => {
+    const location = useLocation()
+    const query = new URLSearchParams(location.search)
+    const keyword = query.get('keyword')
     const {data: products, isLoading, error} = useGetProductsQuery(
-        undefined,
+        keyword || '',
         {
             refetchOnMountOrArgChange: true,
         }
@@ -18,8 +21,11 @@ const HomeScreen = () => {
     if (error) {
         return <Error/>
     }
+    if (products.length === 0) {
+        return <div className="flex items-center justify-center h-full text-3xl font-bold">No products found</div>
+    }
     return (
-        <div className="flex flex-col items-center justify-center h-full">
+        <div className="flex flex-col items-center justify-center h-full]">
             <h1 className="text-3xl font-bold mb-8 text-center">List of products</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
                 {products.map((product: Product) => {

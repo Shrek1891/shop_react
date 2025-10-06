@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import type {RootState} from "../store/store.ts";
 import {logout} from "../features/users.ts";
 import {clearCart} from "../features/addCart.ts";
+import SearchBox from "./SearchBox.tsx";
 
 const openMenu = () => {
     const menu = document.getElementById('mobile-menu');
@@ -53,7 +54,8 @@ const Header = () => {
                     <div className="flex-shrink-0">
                         <Link to="/" className="text-2xl font-bold">Vanilla Shop </Link>
                     </div>
-                    <nav className="hidden md:flex space-x-10 text-lg">
+                    <nav className="hidden md:flex space-x-10 text-lg items-center">
+                        <SearchBox/>
                         {
                             userLogin !== null ? <Link to="/cart"
                                                        className="block text-lg hover:text-gray-300 transition-all">Cart</Link>

@@ -37,7 +37,6 @@ const CartScreen = () => {
     return (
         <div className="bg-gray-100 font-sans min-h-screen">
             <CheckoutSteps step="cart" />
-
             <div className="container mx-auto p-4 max-w-6xl">
                 <div className="flex justify-between items-center mb-8">
                     <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800">Shopping Cart</h1>
@@ -95,7 +94,7 @@ const CartScreen = () => {
                                 < ButtonQuantity
                                     children={<MdDeleteSweep/>}
                                     func={() => dispatch(removeCart(item))}
-                                    disabled={item.qty === 1}
+                                    disabled={item.qty === 0}
                                 />
                             </div>
                         </div>
@@ -103,7 +102,7 @@ const CartScreen = () => {
                 }
 
             </div>
-            {cartItem.length && (
+            {cartItem.length ? (
                 <div className="flex justify-center mt-4">
                     <Link to="/shipping"
                           className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition cursor-pointer"
@@ -111,7 +110,7 @@ const CartScreen = () => {
                         Buy Now
                     </Link>
                 </div>
-            )}
+            ): null }
 
         </div>
     )

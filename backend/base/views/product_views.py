@@ -11,7 +11,11 @@ from base.models import Review
 
 @api_view(['GET'])
 def get_products(request):
-    products = Product.objects.all()
+    query = request.query_params.get('keyword')
+    if query:
+        products = Product.objects.filter(name__icontains=query)
+    else:
+        products = Product.objects.all()
     serializer = ProductSerializer(products, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -74,9 +78,10 @@ def upload_image(request):
     product.save()
     return Response(product.image.url, status=status.HTTP_200_OK)
 
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def create_product_review(request,pk):
+def create_product_review(request, pk):
     print(request.data)
     user = request.user
     product = Product.objects.get(_id=pk)
@@ -102,4 +107,3 @@ def create_product_review(request,pk):
         product.rating = totalRating / len(reviews)
         product.save()
         return Response("Review added", status=status.HTTP_200_OK)
-
