@@ -7,11 +7,12 @@ export const api = createApi({
     baseQuery: fetchBaseQuery({baseUrl: URL}),
     endpoints: (builder) => ({
         getProducts: builder.query({
-            query: (keyword:string) => ({
+            query: ({keyword, page}: {keyword: string | null, page: number | null}) => ({
                 url: 'products',
                 method: 'GET',
                 params: {
                     keyword,
+                    page,
                 },
             }),
 

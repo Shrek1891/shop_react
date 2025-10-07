@@ -24,27 +24,29 @@ function App() {
     return (
         <Provider store={store}>
             <Router>
-                <Header/>
-                <main className="container mx-auto py-2 ">
-                    <Routes>
-                        <Route path="/" element={<HomeScreen/>}/>
-                        <Route path="/product/:id" element={<ProductScreen/>}/>
-                        <Route path="/cart/:id?" element={<CartScreen/>}/>
-                        <Route path="/login" element={<LoginScreen/>}/>
-                        <Route path="/register" element={<RegisterScreen/>}/>
-                        <Route path="/profile/:id?" element={<ProfileScreen/>}/>
-                        <Route path="/shipping" element={<ShippingScreen/>}/>
-                        <Route path="/payment" element={<PaymentScreen/>}/>
-                        <Route path="/confirm" element={<PlaceOrderScreen/>}/>
-                        <Route path="/order/:id" element={<OrderScreen/>}/>
-                        <Route path="/order/:id/pay" element={<OrderScreen/>}/>
-                        <Route path="/users" element={<UserListScreen/>}/>
-                        <Route path="/user/:id/" element={<UserEditScreen/>}/>
-                        <Route path="/products" element={<ListProductScreen key={Date.now()}/>}/>
-                        <Route path="/product/:id/update" element={<UpdateProductScreen/>}/>
-                        <Route path="/orders" element={<OrderListScreen/>}/>
-                    </Routes>
-                </main>
+                <div className="flex flex-col">
+                    <Header/>
+                    <main className="container mx-auto py-2 h-[100vh] ">
+                        <Routes>
+                            <Route path="/" element={<HomeScreen/>}/>
+                            <Route path="/product/:id" element={<ProductScreen/>}/>
+                            <Route path="/cart/:id?" element={<CartScreen/>}/>
+                            <Route path="/login" element={<LoginScreen/>}/>
+                            <Route path="/register" element={<RegisterScreen/>}/>
+                            <Route path="/profile/:id?" element={<ProfileScreen/>}/>
+                            <Route path="/shipping" element={<ShippingScreen/>}/>
+                            <Route path="/payment" element={<PaymentScreen/>}/>
+                            <Route path="/confirm" element={<PlaceOrderScreen/>}/>
+                            <Route path="/order/:id" element={<OrderScreen/>}/>
+                            <Route path="/order/:id/pay" element={<OrderScreen/>}/>
+                            <Route path="/users" element={<UserListScreen/>}/>
+                            <Route path="/user/:id/" element={<UserEditScreen/>}/>
+                            <Route path="/products" element={<ListProductScreen key={Date.now()}/>}/>
+                            <Route path="/product/:id/update" element={<UpdateProductScreen/>}/>
+                            <Route path="/orders" element={<OrderListScreen/>}/>
+                        </Routes>
+                    </main>
+                </div>
                 <Footer/>
             </Router>
         </Provider>
