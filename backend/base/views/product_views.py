@@ -18,7 +18,7 @@ def get_products(request):
     else:
         products = Product.objects.all()
     page = request.query_params.get('page')
-    paginator = Paginator(products, 2)
+    paginator = Paginator(products, 4)
     try:
         products = paginator.page(page)
     except PageNotAnInteger:
@@ -123,3 +123,8 @@ def create_product_review(request, pk):
         product.rating = totalRating / len(reviews)
         product.save()
         return Response("Review added", status=status.HTTP_200_OK)
+
+def get_top_products(request):
+    products = Product.objects.filter(rating__gte=4).order_by('-rating')
+    serializer = ProductSerializer(products, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
