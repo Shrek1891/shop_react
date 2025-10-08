@@ -7,7 +7,7 @@ export const api = createApi({
     baseQuery: fetchBaseQuery({baseUrl: URL}),
     endpoints: (builder) => ({
         getProducts: builder.query({
-            query: ({keyword, page}: {keyword: string | null, page: number | null}) => ({
+            query: ({keyword, page}: { keyword: string | null, page: number | null }) => ({
                 url: 'products',
                 method: 'GET',
                 params: {
@@ -239,6 +239,12 @@ export const api = createApi({
                 },
             })
         }),
+        getTopProducts: builder.query({
+            query: () => ({
+                url: 'products/top/',
+                method: 'GET',
+            })
+        })
     }),
 });
 
@@ -264,7 +270,8 @@ export const {
     useGetOrdersQuery,
     useGetOrderByIdQuery,
     useUpdateOrderToDeliveredMutation,
-    useCreateProductReviewMutation
+    useCreateProductReviewMutation,
+    useGetTopProductsQuery
 } = api;
 
 

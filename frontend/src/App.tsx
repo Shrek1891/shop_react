@@ -26,7 +26,7 @@ function App() {
             <Router>
                 <div className="flex flex-col">
                     <Header/>
-                    <main className="container mx-auto py-2 h-[100vh] ">
+                    <main className="container mx-auto py-2 h-full ">
                         <Routes>
                             <Route path="/" element={<HomeScreen/>}/>
                             <Route path="/product/:id" element={<ProductScreen/>}/>

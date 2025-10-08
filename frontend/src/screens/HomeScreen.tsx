@@ -6,6 +6,7 @@ import {type Product, products} from "../resources.ts";
 import Error from "../components/Error404.tsx";
 import Paginate from "../components/Paginate.tsx";
 import {useEffect, useState} from "react";
+import ProductCarousel from "../components/ProductCarosel.tsx";
 
 const HomeScreen = () => {
     const navigate = useNavigate()
@@ -31,10 +32,11 @@ const HomeScreen = () => {
     }
 
     if (products.products.length === 0) {
-        return <div className="flex items-center justify-center h-full text-3xl font-bold">No products found</div>
+        return <div className="flex items-center justify-center h-screen text-3xl font-bold">No products found</div>
     }
     return (
         <div className="flex flex-col items-center justify-center h-full gap-8">
+            <ProductCarousel/>
             <h1 className="text-3xl font-bold mb-8 text-center">List of products</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
                 {products.products.map((product: Product) => {

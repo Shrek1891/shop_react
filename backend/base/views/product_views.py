@@ -124,6 +124,7 @@ def create_product_review(request, pk):
         product.save()
         return Response("Review added", status=status.HTTP_200_OK)
 
+@api_view(['GET'])
 def get_top_products(request):
     products = Product.objects.filter(rating__gte=4).order_by('-rating')
     serializer = ProductSerializer(products, many=True)
