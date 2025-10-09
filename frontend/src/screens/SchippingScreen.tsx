@@ -8,12 +8,12 @@ import CheckoutSteps from "../components/CheckoutStpes.tsx";
 const ShippingScreen = () => {
     const navigate = useNavigate()
     const shippingAddress = useSelector((state: RootState) => state.addCart.shippingAddress)
-    const [name, setName] = useState(shippingAddress.name ? shippingAddress.name : '')
-    const [lastName, setLastName] = useState(shippingAddress.lastName ? shippingAddress.lastName : '')
-    const [address, setAddress] = useState(shippingAddress.address ? shippingAddress.address : '')
-    const [city, setCity] = useState(shippingAddress.city ? shippingAddress.city : '')
-    const [state, setState] = useState(shippingAddress.state ? shippingAddress.state : '')
-    const [zip, setZip] = useState(shippingAddress.zip ? shippingAddress.zip : '')
+    const [name, setName] = useState(shippingAddress && shippingAddress.name ? shippingAddress.name : '')
+    const [lastName, setLastName] = useState(shippingAddress && shippingAddress.lastName ? shippingAddress.lastName : '')
+    const [address, setAddress] = useState(shippingAddress && shippingAddress.address ? shippingAddress.address : '')
+    const [city, setCity] = useState(shippingAddress && shippingAddress.city ? shippingAddress.city : '')
+    const [state, setState] = useState(shippingAddress && shippingAddress.state ? shippingAddress.state : '')
+    const [zip, setZip] = useState(shippingAddress && shippingAddress.zip ? shippingAddress.zip : '')
     const dispatch = useDispatch()
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -58,7 +58,6 @@ const ShippingScreen = () => {
                                    value={address}
                             />
                         </div>
-
                         <div className="mt-4">
                             <label htmlFor="city" className="block text-gray-700  mb-1">City</label>
                             <input type="text" id="city"
@@ -67,7 +66,6 @@ const ShippingScreen = () => {
                                    value={city}
                             />
                         </div>
-
                         <div className="grid grid-cols-2 gap-4 mt-4">
                             <div>
                                 <label htmlFor="state"

@@ -2,7 +2,7 @@ import {useDeleteUserMutation, useGetUsersQuery} from "../store/api.ts";
 import Loading from "../components/Loading.tsx";
 import {Link, useNavigate} from "react-router-dom";
 import {FaEdit, FaTrashAlt} from "react-icons/fa";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {useDispatch} from "react-redux";
 import {saveUsersList} from "../features/addCart.ts";
 
@@ -38,6 +38,7 @@ const UserListScreen = () => {
             console.log(error)
         }
     }
+    if (isDeleting) return <Loading/>
     return (
         <div className="container mx-auto h-screen">
             <h1 className="text-3xl font-bold mb-8 text-center">Users</h1>

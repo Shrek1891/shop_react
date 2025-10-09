@@ -1,13 +1,11 @@
 import CheckoutSteps from "../components/CheckoutStpes.tsx";
 import {useNavigate} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import type {RootState} from "../store/store.ts";
+import {useDispatch} from "react-redux";
 import {useState} from "react";
 import {savePaymentMethod} from "../features/addCart.ts";
 
 const PaymentScreen = () => {
     const navigate = useNavigate()
-    const shippingAddress = useSelector((state: RootState) => state.addCart.shippingAddress)
     const [paymentMethod, setPaymentMethod] = useState('PayPal')
     const dispatch = useDispatch()
     const handleSubmit = (e: React.FormEvent) => {
@@ -15,7 +13,6 @@ const PaymentScreen = () => {
         dispatch(savePaymentMethod(paymentMethod))
         navigate('/confirm')
     }
-
     return (
         <div className="container mx-auto p-4 max-w-6xl h-screen">
             <CheckoutSteps step="payment"/>

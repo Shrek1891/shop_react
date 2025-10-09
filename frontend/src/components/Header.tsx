@@ -89,6 +89,7 @@ const Header = () => {
                                 onChange={chooseAdminHandler}
                                 className="bg-blue-900 text-white"
                                 defaultValue="Admins Panel"
+                                value={locate.pathname === '/users' ? 'Users' : locate.pathname === '/orders' ? 'Orders' : locate.pathname === '/products' ? 'Products' : 'Admins Panel'}
                             >
                                 <option value="Admins Panel">Admins Panel</option>
                                 <option value="Users">Users</option>
@@ -97,15 +98,6 @@ const Header = () => {
                             </select>
                         }
                     </nav>
-                    <div className="hidden md:block">
-                        <Link
-                            to="/contact"
-                            className="bg-yellow-500 hover:bg-yellow-400 text-black py-2 px-6
-                            rounded-full text-lg transition-all"
-                        >
-                            Get in Touch
-                        </Link>
-                    </div>
                     <div className="md:hidden flex items-center">
                         <button
                             id="menu-button"

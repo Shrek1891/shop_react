@@ -54,7 +54,7 @@ const PlaceOrderScreen = () => {
                 <div>
                     <OrderSummary itemsPrice={itemsPrice} shippingPrice={shippingPrice} taxPrice={taxPrice}
                                   totalPrice={totalPrice}/>
-                    <SimpleBtn onClick={placeOrder} text="Place Order"/>
+                    <SimpleBtn onClick={placeOrder} text="Place Order" type="button"/>
                 </div>
             </div>
         </div>

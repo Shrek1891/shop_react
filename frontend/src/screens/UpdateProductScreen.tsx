@@ -3,7 +3,6 @@ import {
     useGetProductQuery,
     useGetProductsQuery,
     useUpdateProductMutation,
-    useUploadImageMutation
 } from "../store/api.ts";
 import Loading from "../components/Loading.tsx";
 import {useEffect, useState} from "react";
@@ -13,10 +12,9 @@ const UpdateProductScreen = () => {
     const {id} = useParams()
     const [product, setProduct] = useState<Product>()
     const [updateProduct, {isLoading: isUpdating}] = useUpdateProductMutation()
-    const [uploadImage, {isLoading: isUploading}] = useUploadImageMutation()
     const user = JSON.parse(localStorage.getItem('user') || '{}')
-    const [isUpload, setIsUpload] = useState(false)
-    const {data, isLoading, error, refetch: refetchProduct} = useGetProductQuery(id)
+    const [_, setIsUpload] = useState(false)
+    const {data, isLoading, refetch: refetchProduct} = useGetProductQuery(id)
     const navigate = useNavigate()
     const {refetch} = useGetProductsQuery(user.token)
     useEffect(() => {
@@ -37,8 +35,6 @@ const UpdateProductScreen = () => {
         setIsUpload(false)
         await refetchProduct()
     }
-
-
     return (
         <div className="container mx-auto h-screen flex flex-col gap-2 items-center">
             <h1 className="text-2xl font-bold mb-2 text-center">Update Product</h1>

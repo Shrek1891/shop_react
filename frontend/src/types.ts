@@ -21,12 +21,16 @@ export interface OrderItem {
     countInStock: number;
 }
 
-export type shippingAddress =  {
+export type shippingAddress = {
+    name?: string,
+    lastName: string,
     address: string,
     city: string,
-    postalCode: string,
+    zip: string,
     country: string,
     phone: string,
+    state: string,
+
 }
 
 export type Order = {
@@ -51,4 +55,8 @@ export interface Review {
     comment: string;
     rating: number;
     createdAt: string;
+}
+
+export type User = {
+    user: []
 }

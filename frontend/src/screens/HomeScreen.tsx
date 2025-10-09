@@ -1,20 +1,17 @@
 import Card from "../components/Card.tsx";
-import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import Loading from "../components/Loading.tsx";
 import {useGetProductsQuery} from "../store/api.ts";
-import {type Product, products} from "../resources.ts";
+import {type Product} from "../resources.ts";
 import Error from "../components/Error404.tsx";
 import Paginate from "../components/Paginate.tsx";
-import {useEffect, useState} from "react";
 import ProductCarousel from "../components/ProductCarosel.tsx";
 
 const HomeScreen = () => {
-    const navigate = useNavigate()
     const location = useLocation()
     const query = new URLSearchParams(location.search)
     const keyword = query.get('keyword')
     const page = Number(query.get('page'))
-
     const {data: products, isLoading, error} = useGetProductsQuery(
         {
             keyword: keyword || '',

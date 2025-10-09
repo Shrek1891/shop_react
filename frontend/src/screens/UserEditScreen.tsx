@@ -1,4 +1,4 @@
-import {Link, useLocation} from "react-router-dom";
+import {useLocation} from "react-router-dom";
 import {useGetUserByIdQuery, useUpdateUserMutation} from "../store/api.ts";
 import Loading from "../components/Loading.tsx";
 import {useEffect, useState} from "react";
@@ -10,7 +10,7 @@ import SimpleBtn from "../components/ui/simpleBtn.tsx";
 const UserEditScreen = () => {
     const [id] = useLocation().pathname.split('/').slice(-1);
     const user = JSON.parse(localStorage.getItem('user') || '{}')
-    const {data, error, isLoading} = useGetUserByIdQuery({id, token: user.token})
+    const {data, isLoading} = useGetUserByIdQuery({id, token: user.token})
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [isAdmin, setIsAdmin] = useState(false)
@@ -63,6 +63,7 @@ const UserEditScreen = () => {
                         </div>
                         <div className="flex justify-center">
                             <SimpleBtn
+                                type={"button"}
                                 text="Update"
                                 onClick={async () => await updateUser({
                                     user: {name, email, is_admin: isAdmin},
