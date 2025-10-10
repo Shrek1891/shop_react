@@ -9,7 +9,7 @@ const Shipping = ({isFull, isDelivered}: { isFull?: boolean, isDelivered?: boole
             <div>
                 <h2 className="text-2xl font-bold text-gray-800 mb-4">Shipping : </h2>
                 <span>{shippingAddress.address}</span> <span>{shippingAddress.city}</span>
-                <span>{shippingAddress.postalCode}</span> <span>{shippingAddress.country}</span>
+                <span>{shippingAddress.zip}</span> <span>{shippingAddress.country}</span>
                 <span>{shippingAddress.phone}</span>
                 {isFull && (
                     <div className="flex flex-col gap-2">
